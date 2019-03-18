@@ -1,0 +1,46 @@
+imagefilledrectangle($img, $bars[$i][0], $bars[$i][1], $bars[$i][2], $bars[$i][3], ${$bars[$i][4]}); barcode php 7
+ID 6 untuk fungsi debit di payment method
+ganti phpexcel terbaru
+
+PENGHAPUSAN PADA PRINT_INVOICE.PHP
+<span class="left" style="text-align: left;"><?php echo $lang_telephone; ?> : <?php echo $outlet_contact; ?></span> 
+<span class="left" style="text-align: left;"><?php echo $lang_customer_name; ?>&nbsp; : <?php echo $cust_fullname; ?></span> 
+				<span class="left" style="text-align: left;"><?php echo $lang_mobile; ?> : <?php if (empty($cust_mobile)) {
+   					echo '-';
+					} else {
+  					echo $cust_mobile;
+				} ?></span>
+
+SELECT o.id, o.order_id, o.product_code, o.product_name,o.cost, o.price, o.qty, c.name as tenant
+FROM order_items as o LEFT JOIN category as c ON o.product_category = c.id
+WHERE order_id = '1' ORDER BY id
+
+SELECT o.id, o.customer_id,o.customer_name,o.customer_email,o.customer_mobile,o.ordered_datetime,o.outlet_id,o.outlet_name,o.outlet_address,o.outlet_contact,o.outlet_receipt_footer,
+o.gift_card,o.subtotal,o.discount_total,o.discount_percentage,o.promo_id,o.tax,o.grandtotal,o.total_items,o.payment_method,o.payment_method_name,o.cheque_number,o.paid_amt,
+o.return_change,o.created_user_id,o.created_datetime,o.updated_user_id,o.updated_datetime,o.vt_status,o.status,
+o.refund_status,o.remark,o.card_number
+FROM orders  as o 
+LEFT JOIN order_items as oi ON o.id = oi.order_id 
+LEFT JOIN category as c ON oi.product_category = '11'
+WHERE o.ordered_datetime >= '2019-02-05 00:00:00'  AND o.ordered_datetime <= '2019-02-05 23:59:59' ORDER BY o.id DESC
+
+
+SELECT o.id, o.customer_id,o.customer_name,o.customer_email,o.customer_mobile,o.ordered_datetime,o.outlet_id,o.outlet_name,o.outlet_address,o.outlet_contact,o.outlet_receipt_footer,       o.gift_card,o.subtotal,o.discount_total,o.discount_percentage,o.promo_id,o.tax,o.grandtotal,o.total_items,o.payment_method,o.payment_method_name,o.cheque_number,o.paid_amt,                    o.return_change,o.created_user_id,o.created_datetime,o.updated_user_id,o.updated_datetime,o.vt_status,o.status,
+                    o.refund_status,o.remark,o.card_number,sum(oi.qty) as join_qty
+                    FROM orders  as o 
+                    RIGHT JOIN order_items as oi ON o.id = oi.order_id 
+                    LEFT JOIN category as c on oi.product_category = c.id
+                    WHERE o.ordered_datetime >= '2019-02-07 00:00:00'  AND o.ordered_datetime <= '2019-02-07 23:59:59' AND c.id = '10'
+                    ORDER BY o.id DESC
+
+
+
+
+
+SELECT o.id, o.customer_id,o.customer_name,o.customer_email,o.customer_mobile,o.ordered_datetime,o.outlet_id,o.outlet_name,o.outlet_address,o.outlet_contact,o.outlet_receipt_footer,       o.gift_card,o.subtotal,o.discount_total,o.discount_percentage,o.promo_id,o.tax,o.grandtotal,o.total_items,o.payment_method,o.payment_method_name,o.cheque_number,o.paid_amt,                    o.return_change,o.created_user_id,o.created_datetime,o.updated_user_id,o.updated_datetime,o.vt_status,o.status,
+                    o.refund_status,o.remark,o.card_number,sum(oi.qty) as join_qty
+                    FROM orders  as o 
+                    RIGHT JOIN order_items as oi ON o.id = oi.order_id 
+                    LEFT JOIN category as c on oi.product_category = c.id
+                    WHERE o.ordered_datetime >= '2019-02-07 00:00:00'  AND o.ordered_datetime <= '2019-02-07 23:59:59' AND c.id = '10'
+                    ORDER BY o.id DESC
