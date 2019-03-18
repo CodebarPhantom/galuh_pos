@@ -144,7 +144,7 @@
 	@media print {
 		body { text-transform: uppercase; }
 		#buttons { display: none; }
-		#wrapper { width: 95%; font-size:13px; }
+		#wrapper { width: 95%; font-size:12px; }
 		#wrapper img { max-width:300px; width: 80%; }
 		#bkpos_wrp{
 			display: none;
