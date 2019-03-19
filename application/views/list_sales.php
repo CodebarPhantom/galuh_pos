@@ -69,6 +69,11 @@
 									<?php echo $lang_export_to_excel; ?>
 								</button>
 							</a>
+							<a href="<?=base_url()?>sales/print_closing" style="text-decoration: none">
+								<button type="button" class="btn btn-info" style="background-color: #5c8bb8; border-color: #3c6184;">
+									<?php echo $lang_closing_sales; ?>
+								</button>
+							</a>
 						</div>
 					</div>
 					
@@ -92,80 +97,80 @@
 										</tr>
 									</thead>
 									<tbody>
-<?php
-    $today_start = date('Y-m-d 00:00:00', time());
-    $today_end = date('Y-m-d 23:59:59', time());
+										<?php
+											$today_start = date('Y-m-d 00:00:00', time());
+											$today_end = date('Y-m-d 23:59:59', time());
 
-    if ($user_role == 1) {
-        $orderResult = $this->db->query("SELECT * FROM orders WHERE ordered_datetime >= '$today_start' AND ordered_datetime <= '$today_end' ORDER BY id DESC ");
-    } else {
-        $orderResult = $this->db->query("SELECT * FROM orders WHERE ordered_datetime >= '$today_start' AND ordered_datetime <= '$today_end' AND outlet_id= '$user_outlet' ORDER BY id DESC ");
-    }
-    $orderRows = $orderResult->num_rows();
+											if ($user_role == 1) {
+												$orderResult = $this->db->query("SELECT * FROM orders WHERE ordered_datetime >= '$today_start' AND ordered_datetime <= '$today_end' ORDER BY id DESC ");
+											} else {
+												$orderResult = $this->db->query("SELECT * FROM orders WHERE ordered_datetime >= '$today_start' AND ordered_datetime <= '$today_end' AND outlet_id= '$user_outlet' ORDER BY id DESC ");
+											}
+											$orderRows = $orderResult->num_rows();
 
-    if ($orderRows > 0) {
-        $orderData = $orderResult->result();
+											if ($orderRows > 0) {
+												$orderData = $orderResult->result();
 
-        foreach ($orderData as $data) {
-            $order_id = $data->id;
-            $cust_fn = $data->customer_name;
-            $ordered_dtm = date("$setting_dateformat H:i A", strtotime($data->ordered_datetime));
-            $outlet_id = $data->outlet_id;
-            $subTotal = $data->subtotal;
-            $discountTotal = $data->discount_total;
-            $taxTotal = $data->tax;
-            $grandTotal = $data->grandtotal;
-            $total_items = $data->total_items;
-            $payment_method = $data->payment_method;
-            $status = $data->status;
-            $outlet_name = $data->outlet_name;
-            $order_type = $data->status; ?>
-			<tr>
-				<td><?php echo $ordered_dtm; ?></td>
-				<td><?php echo $order_id; ?></td>
-				<td style="font-weight: bold;">
-				<?php
-                    if ($order_type == '1') {
-                        echo 'Sale';
-                    } elseif ($order_type == '2') {
-                        echo 'Return';
-                    } ?>
-				</td>
-				<td><?php echo $outlet_name; ?></td>
-				<td><?php echo $cust_fn; ?></td>
-				<td><?php echo $total_items; ?></td>
-				<td><?php echo $subTotal; ?></td>
-				<td><?php echo $taxTotal; ?></td>
-				<td><?php echo $grandTotal; ?></td>
-				<td>
-<?php
-    if ($order_type == '1') {
-        ?>
-<a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
-	<i class="icono-list" style="color: #005b8a;"></i>
-</a>
-<?php
+												foreach ($orderData as $data) {
+													$order_id = $data->id;
+													$cust_fn = $data->customer_name;
+													$ordered_dtm = date("$setting_dateformat H:i A", strtotime($data->ordered_datetime));
+													$outlet_id = $data->outlet_id;
+													$subTotal = $data->subtotal;
+													$discountTotal = $data->discount_total;
+													$taxTotal = $data->tax;
+													$grandTotal = $data->grandtotal;
+													$total_items = $data->total_items;
+													$payment_method = $data->payment_method;
+													$status = $data->status;
+													$outlet_name = $data->outlet_name;
+													$order_type = $data->status; ?>
+													<tr>
+														<td><?php echo $ordered_dtm; ?></td>
+														<td><?php echo $order_id; ?></td>
+														<td style="font-weight: bold;">
+														<?php
+															if ($order_type == '1') {
+																echo 'Sale';
+															} elseif ($order_type == '2') {
+																echo 'Return';
+															} ?>
+														</td>
+														<td><?php echo $outlet_name; ?></td>
+														<td><?php echo $cust_fn; ?></td>
+														<td><?php echo $total_items; ?></td>
+														<td><?php echo $subTotal; ?></td>
+														<td><?php echo $taxTotal; ?></td>
+														<td><?php echo $grandTotal; ?></td>
+														<td>
+															<?php
+																if ($order_type == '1') {
+																	?>
+															<a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
+																<i class="icono-document" style="color: #005b8a;"></i>
+															</a>
+															<?php
 
-    }
-            if ($order_type == '2') {
-                ?>
-<a onclick="openReceipt('<?=base_url()?>returnorder/printReturn?return_id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
-	<i class="icono-list" style="color: #005b8a;"></i>
-</a>
-<?php
+																}
+																		if ($order_type == '2') {
+																			?>
+															<a onclick="openReceipt('<?=base_url()?>returnorder/printReturn?return_id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
+																<i class="icono-document" style="color: #005b8a;"></i>
+															</a>
+															<?php
 
-            } ?>
-<a href="<?=base_url()?>sales/deleteSale?id=<?php echo $order_id; ?>" style="text-decoration: none; margin-left: 5px;" title="Delete" onclick="return confirm('Are you confirm to delete this Sale?')">
-<i class="icono-crossCircle" style="color: #F00"></i>
-</a>
-				</td>
-			</tr>
-<?php
+																		} ?>
+															<a href="<?=base_url()?>sales/deleteSale?id=<?php echo $order_id; ?>" style="text-decoration: none; margin-left: 5px;" title="Delete" onclick="return confirm('Are you confirm to delete this Sale?')">
+															<i class="icono-crossCircle" style="color: #F00"></i>
+															</a>
+																			</td>
+																		</tr>
+															<?php
 
-        }
-        unset($orderData);
-    }
-?>
+																	}
+																	unset($orderData);
+																}
+															?>
 									</tbody>
 								</table>
 							</div>

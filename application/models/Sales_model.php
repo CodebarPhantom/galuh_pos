@@ -10,6 +10,15 @@ class Sales_model extends CI_Model
         $this->load->database();
     }
 
+    public function print_closing(){
+        $hari_ini = date('Y-m-d');
+        return $query = $this->db->query("SELECT oi.id, oi.product_code, oi.product_name, oi.price, sum(oi.qty)
+        FROM order_items as oi inner join orders as o on oi.order_id = o.id
+        where o.created_datetime >= '$hari_ini 00:00:00' AND o.created_datetime <= '$hari_ini 23:59:59'
+        GROUP by oi.product_code  
+        ORDER BY oi.product_name ASC")->result();
+    }
+
 /*
     public function record_sales_count()
     {

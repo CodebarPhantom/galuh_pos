@@ -138,9 +138,41 @@ class Sales extends CI_Controller
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
 
+        $data['lang_closing_sales'] = $this->lang->line('closing_sales');
+
         $this->load->view('list_sales', $data);
     }
 
+    public function print_closing(){
+        $data['lang_address'] = $this->lang->line('address');
+        $data['lang_telephone'] = $this->lang->line('telephone');
+        $data['lang_sale_id'] = $this->lang->line('sale_id');
+        $data['lang_date'] = $this->lang->line('date');
+        $data['lang_customer_name'] = $this->lang->line('customer_name');
+        $data['lang_mobile'] = $this->lang->line('mobile');
+        $data['lang_products'] = $this->lang->line('products');
+        $data['lang_qty'] = $this->lang->line('qty');
+        $data['lang_per_item'] = $this->lang->line('per_item');
+        $data['lang_total'] = $this->lang->line('total');
+        $data['lang_total_items'] = $this->lang->line('total_items');
+        $data['lang_sub_total'] = $this->lang->line('sub_total');
+        $data['lang_tax'] = $this->lang->line('tax');
+        $data['lang_grand_total'] = $this->lang->line('grand_total');
+        $data['lang_paid_amt'] = $this->lang->line('paid_amt');
+        $data['lang_paid_by'] = $this->lang->line('paid_by');
+        $data['lang_card_number'] = $this->lang->line('card_number');
+        $data['lang_cheque_number'] = $this->lang->line('cheque_number');
+        $data['lang_discount'] = $this->lang->line('discount');
+        $data['lang_return_change'] = $this->lang->line('return_change');
+        $data['lang_unpaid_amount'] = $this->lang->line('unpaid_amount');
+        $data['lang_paid_by'] = $this->lang->line('paid_by');
+        $data['lang_back_to_pos'] = $this->lang->line('back_to_pos');
+        $data['lang_print_small_receipt'] = $this->lang->line('print_small_receipt');
+        $data['lang_email'] = $this->lang->line('email');
+        $data['lang_print_a4'] = $this->lang->line('print_a4');
+
+        $this->load->view('print_closing', $data);
+    }
     // Opened Bill;
     public function opened_bill()
     {

@@ -319,3 +319,7 @@
 
     $lang['margin_80'] = 'Margin 80%';
     $lang['margin_20'] = 'Margin 20%';
+
+    $lang['closing_sales'] = 'Closing Sales';
+
+
