@@ -160,9 +160,7 @@
 															<?php
 
 																		} ?>
-															<a href="<?=base_url()?>sales/deleteSale?id=<?php echo $order_id; ?>" style="text-decoration: none; margin-left: 5px;" title="Delete" onclick="return confirm('Are you confirm to delete this Sale?')">
-															<i class="icono-crossCircle" style="color: #F00"></i>
-															</a>
+															
 																			</td>
 																		</tr>
 															<?php

@@ -90,14 +90,14 @@
 								<input type="hidden" name="promo_id" value="<?php echo $promo_id; ?>" />
 								<input type="hidden" name="promotion_name" value="<?php echo $promotion_name; ?>" />
 								<?php
-									IF($promo_id == 1){?>
+									//IF($promo_id == 1){?>
 										
-								<?php	}ELSE{ ?>
+								<?php	//}ELSE{ ?>
 								
-								<button type="submit" class="btn btn-primary" style="border: 0px; background-color: #c72a25;">
-									<?php echo $lang_delete_promotion; ?>
-								</button>
-								<?php } ?>
+								<!--<button type="submit" class="btn btn-primary" style="border: 0px; background-color: #c72a25;">
+									<?php // echo $lang_delete_promotion; ?>
+								</button>-->
+								<?php // } ?>
 							</form>
 						</div>
 					</div>

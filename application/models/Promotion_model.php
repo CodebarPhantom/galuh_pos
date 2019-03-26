@@ -31,4 +31,12 @@ class Promotion_model extends CI_Model
 
         return $result;
     }
+
+    public function updateData($table, $upd_data, $id_promo)
+    {
+        $this->db->where('id', $id_promo);
+        $this->db->update("$table", $upd_data);
+
+        return true;
+    }
 }

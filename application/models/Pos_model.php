@@ -25,6 +25,6 @@ class Pos_model extends CI_Model
 
     public function tab_category(){
         return $query = $this->db->query("SELECT * FROM category where status = '1'
-        ORDER BY name ASC ")->result();
+        ORDER BY name + 0 ASC ")->result();
     }
 }

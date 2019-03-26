@@ -156,14 +156,13 @@
 					<a href="<?=base_url()?>pos/view_invoice?id=<?php echo $sales_id; ?>" style="text-decoration: none;" target="_blank">
 					<?php	
                         }
-            if ($order_type == '2') {
-                ?>
-					<a href="<?=base_url()?>returnorder/printReturn?return_id=<?php echo $sales_id; ?>" style="text-decoration: none;" target="_blank">
-					<?php
+					if ($order_type == '2') { ?>
+							<a href="<?=base_url()?>returnorder/printReturn?return_id=<?php echo $sales_id; ?>" style="text-decoration: none;" target="_blank">
+							<?php
 
-            } ?>
-						<?php echo $sales_id; ?>
-					</a>
+							} ?>
+								<?php echo $sales_id; ?>
+							</a>
 				</td>
 				<td style="font-weight: bold;">
 					<?php

@@ -310,15 +310,18 @@
 <table id="example" class="display" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th width="7%"><?php echo $lang_date; ?></th>
+            <!--<th width="10%"><?php // echo $lang_date; ?></th>-->
             <th width="5%"><?php echo $lang_type; ?></th>
             <th width="5%"><?php echo $lang_sale_id; ?></th>            
             <th width="10%"><?php echo $lang_outlets; ?></th>
             <th width="5%"><?php echo $lang_payment_methods; ?></th>
-            <th width="10%"><?php echo $lang_sub_total; ?> (<?php echo $site_currency; ?>)</th>
+            <th width="10%"><?php echo $lang_promotion;?></th>
+            <th width="10%"><?php echo $lang_gross_sales; ?> (<?php echo $site_currency; ?>)</th>
+            <th width="10%"><?php echo $lang_discount; ?> (<?php echo $site_currency; ?>)</th>
+            <th width="10%"><?php echo $lang_net_sales; ?> (<?php echo $site_currency; ?>)</th>
             <th width="10%"><?php echo $lang_tax; ?> (<?php echo $site_currency; ?>)</th>
             <th width="10%"><?php echo $lang_grand_total; ?> (<?php echo $site_currency; ?>)</th>
-            <th width="10%"><?php echo $lang_promotion;?></th>
+            
             <th width="10%"><?php echo $lang_action; ?></th>
         </tr>
     </thead>
@@ -364,9 +367,9 @@
         }
         $orderResult = $this->db->query("SELECT o.id,
         o.ordered_datetime,o.customer_name,o.customer_mobile,o.outlet_id,o.subtotal,o.discount_total,o.tax,o.grandtotal,
-        o.payment_method,o.payment_method_name,o.paid_amt,o.return_change,o.cheque_number,
+        o.payment_method,o.payment_method_name,o.paid_amt,o.return_change,o.cheque_number, o.discount_total,
         o.discount_percentage,o.outlet_name,o.outlet_address,o.outlet_contact,
-        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name
+        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name,p.discount_percentage
         FROM orders as o 
         INNER JOIN promotion as p ON o.promo_id = p.id
         WHERE o.ordered_datetime >= '$start_date' AND o.ordered_datetime <= '$end_date' $paid_sort $outlet_sort 
@@ -377,11 +380,12 @@
             $orderData = $orderResult->result();
             for ($od = 0; $od < count($orderData); ++$od) {
                 $order_id = $orderData[$od]->id;
-                $order_dtm = date("$site_dateformat H:i A", strtotime($orderData[$od]->ordered_datetime));
-            
+                $order_dtm = date("$site_dateformat H:i", strtotime($orderData[$od]->ordered_datetime));            
                 $outlet_id = $orderData[$od]->outlet_id;
                 $subTotal = $orderData[$od]->subtotal;
                 $promotion_name = $orderData[$od]->promotion_name;
+                $discount_percentage = $orderData[$od]->discount_percentage;
+                $discount_total = $orderData[$od]->discount_total;
                 $tax = $orderData[$od]->tax;
                 $grandTotal = $orderData[$od]->grandtotal;
                 $pay_method_id = $orderData[$od]->payment_method;
@@ -390,9 +394,9 @@
                 $payment_method_name = $orderData[$od]->payment_method_name;
                 $order_type = $orderData[$od]->status; ?>
 			<tr>
-            	<td>
-	            	<?php echo $order_dtm; ?>
-            	</td>
+            	<!--<td>
+	            	<?php // echo $order_dtm; ?>
+            	</td>-->
             	<td><?php
                         if ($order_type == '1') {
                             echo 'Sale';
@@ -412,39 +416,67 @@
                             echo "<br />(Cheque No. : $cheque_numb)";
                         } ?>
             	</td>
-            	<td>
-	            	<?php echo number_format($subTotal, 2, '.', ''); ?>
-            	</td>
-            	<td>
-	            	<?php echo number_format($tax, 2, '.', ''); ?>
-            	</td>
-            	<td>
-	            	<?php echo number_format($grandTotal, 2, '.', ''); ?>
-            	</td>
                 <td>
 	            	<?php echo $promotion_name; ?>
             	</td>
+            	<td> 
+                    <?php 
+                    
+                    echo number_format($subTotal+$discount_total); ?>
+            	</td>
+                <td>                      
+                    <?php 
+                   /* if ($discount_percentage == 0) {
+                        $dis_amt = 0;
+                    } elseif (strpos($discount_percentage, '%') > 0) {
+                        $temp_dis_Array= explode('%', $discount_percentage);                    
+                        $temp_dis = $temp_dis_Array[0];                            
+                        $temp_item_price = 0;  
+                        $dis_amt=0;                        
+                        $dis_amt = number_format(($subTotal * ($temp_dis / 100)), 2, '.', '');
+                    }else{
+                        $dis_amt = number_format($discount_percentage);
+                    } */
+
+                    if ($discount_total == 0 ){
+                        echo " ";
+                    }else{
+                        echo "(".number_format($discount_total).")";
+                    }
+                    ?>
+            	</td>
+                <td>
+	            	<?php echo number_format($subTotal); ?>
+            	</td>
+            	<td>
+	            	<?php echo number_format($tax); ?>
+            	</td>
+            	<td>
+	            	<?php echo number_format($grandTotal); ?>
+            	</td>
+                
             	<td>
                     <?php
-                        if ($order_type == '1') {
-                            ?>
-                        <a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
+                       if ($promotion_name != 'No Promotion') {?>
+                            <a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
                             <i class="icono-document" style="color: #005b8a;"></i>
-                        </a>
-                        <a href="<?=base_url()?>returnorder/create_return?sales_id=<?php echo $order_id; ?>" style="text-decoration: none;" cursor: pointer;" title="Return Order">
-                            <i class="icono-reset" style="color: #005b8a;"></i>
-						</a>
+                            </a>
+                            <a href="<?=base_url()?>sales/deleteSale?id=<?php echo $order_id; ?>" style="text-decoration: none; margin-left: 5px;" title="Delete" onclick="return confirm('Are you confirm to delete this Sale?')">
+							    <i class="icono-crossCircle" style="color: #F00"></i>
+							</a>
+                       <?php }else if ($order_type == '1') {  ?>
+                            <a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
+                                <i class="icono-document" style="color: #005b8a;"></i>
+                            </a>
+                            <a href="<?=base_url()?>returnorder/create_return?sales_id=<?php echo $order_id; ?>" style="text-decoration: none;" cursor: pointer;" title="Return Order">
+                                <i class="icono-reset" style="color: #005b8a;"></i>
+                            </a>
 
-                    <?php
-
-                        }
-                                    if ($order_type == '2') {
-                                        ?>
-                        <a onclick="openReceipt('<?=base_url()?>returnorder/printReturn?return_id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
-                            <i class="icono-document" style="color: #005b8a;"></i>
-                        </a>
-                    <?php
-                                    } ?>
+                        <?php } else if ($order_type == '2') { ?>
+                            <a onclick="openReceipt('<?=base_url()?>returnorder/printReturn?return_id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
+                                <i class="icono-document" style="color: #005b8a;"></i>
+                            </a>
+                    <?php  } ?>
             	</td>
 	        </tr>
 <?php	

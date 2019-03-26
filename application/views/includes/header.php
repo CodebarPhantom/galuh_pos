@@ -60,7 +60,7 @@
 		<script src="<?=base_url()?>assets/js/respond.min.js"></script>
 		<![endif]-->
 		
-		<script src="<?=base_url()?>assets/cdn/jquery.min.js"></script>		
+		<script src="<?=base_url()?>assets/cdn/jquery-1.12.4.min.js"></script>		
 		<script src="<?=base_url()?>assets/cdn/bootstrap.min.js"></script>
 
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>	

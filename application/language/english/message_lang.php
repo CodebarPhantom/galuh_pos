@@ -322,4 +322,7 @@
 
     $lang['closing_sales'] = 'Closing Sales';
 
+    $lang['gross_sales'] = 'Gross Sales';
+    $lang['net_sales']= 'Net Sales';
+
 

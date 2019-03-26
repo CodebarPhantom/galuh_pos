@@ -467,6 +467,7 @@ class Promotion extends CI_Controller
         $discount = $this->input->post('discount');
         $start_date = date('Y-m-d', strtotime(strip_tags($this->input->post('start_date'))));
         $end_date = date('Y-m-d', strtotime(strip_tags($this->input->post('end_date'))));
+        $status = $this->input->post('status');
 
         $upd_data = array(
             'promotion_name' => $promotion_name,
@@ -477,7 +478,7 @@ class Promotion extends CI_Controller
             
             //'status'=>1
         );
-        $this->Constant_model->updateData('promotion', $upd_data, $promo_id);
+        $this->Promotion_model->updateData('promotion', $upd_data, $promo_id);
 
         $this->session->set_flashdata('alert_msg', array('success', 'Update Promotion', 'Successfully Updated Promotion Detail!'));
         redirect(base_url().'promotion/edit_promotion?promo_id='.$promo_id);

@@ -391,7 +391,7 @@ class Sales extends CI_Controller
         } elseif ($order_type == '2') {
             $this->session->set_flashdata('alert_msg', array('success', 'Delete Return', 'Successfully Deleted Return Order.'));
         }
-        redirect(base_url().'sales/list_sales');
+        redirect(base_url().'reports/sales_report');
     }
 
     // Delete Suspend;

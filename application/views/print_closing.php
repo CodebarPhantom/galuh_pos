@@ -11,7 +11,8 @@
     $settingData = $settingResult->row();
 
     $setting_dateformat = $settingData->datetime_format;
-    $setting_site_logo = $settingData->site_logo;
+	$setting_site_logo = $settingData->site_logo;
+	$hari_ini = date('Y-m-d');
 
 	//Eryan Fauzan
     /*$orderData = $this->Constant_model->getDataOneColumn('orders', 'id', $order_id);*/
@@ -145,7 +146,7 @@
 	@media print {
 		body { text-transform: uppercase; }
 		#buttons { display: none; }
-		#wrapper { width: 95%; font-size:12px; }
+		#wrapper { width: 100%; font-size:12px; }
 		#wrapper img { max-width:300px; width: 80%; }
 		#bkpos_wrp{
 			display: none;
@@ -186,23 +187,27 @@
 	<div style="clear:both;"></div>
     
 	<table class="table" cellspacing="0"  border="0"> 
-		<thead> 
-			<tr> 
+			<tr>
+				<th width="100%" colspan="5"> Orders </th>
+			</tr>
+			<tr>					
 				<th width="10%"><em>#</em></th> 
 				<th width="35%" align="left"><?php echo $lang_products; ?></th>
 				<th width="10%"><?php echo $lang_qty; ?></th>
 				<th width="25%"><?php echo $lang_per_item; ?></th>
 				<th width="20%" align="right"><?php echo $lang_total; ?></th> 
 			</tr> 
-		</thead> 
+		
 		<tbody> 
+		
 		<?php
-            $total_item_amt = 0;
-            $total_item_qty = 0;
-			$hari_ini = date('Y-m-d');
-            $orderItemResult = $this->db->query("SELECT oi.id, oi.product_code, oi.product_name, oi.price, sum(oi.qty) as qty
+		//report return belum masuk diskon juga
+            $o_total_item_amt = 0;
+            $o_total_item_qty = 0;
+			
+            $orderItemResult = $this->db->query("SELECT oi.id, oi.product_code, oi.product_name, oi.price, sum(oi.qty) as qty, o.discount_percentage
 			FROM order_items as oi inner join orders as o on oi.order_id = o.id
-			where o.created_datetime >= '2019-03-18 00:00:00' AND o.created_datetime <= '2019-03-18 23:59:59'
+			where o.created_datetime >= '$hari_ini 00:00:00' AND o.created_datetime <= '$hari_ini 23:59:59'
 			GROUP by oi.product_code  
 			ORDER BY oi.product_name ASC ");
             $orderItemData = $orderItemResult->result();
@@ -210,12 +215,27 @@
                 $pcode = $orderItemData[$i]->product_code;
                 $name = $orderItemData[$i]->product_name;
                 $qty = $orderItemData[$i]->qty;
-                $price = $orderItemData[$i]->price;
+				$price = $orderItemData[$i]->price;
+				$discount = $orderItemData[$i]->discount_percentage;
+				
+				if ($discount == 0 || NULL) {
+					$dis_amt = 0;
+				} elseif (strpos($discount, '%') > 0) {
+					$temp_dis_Array= explode('%', $discount);                    
+					$temp_dis = $temp_dis_Array[0];                            
+					$temp_item_price = 0;  
+					$dis_amt=0;                        
+					$dis_amt = "-".($price * ($temp_dis / 100) * $qty);
+				}else{
+					$dis_amt = $discount;
+				}
+				
+				//$net_price = $price + $dis_amt;
 
                 $each_row_price = 0;
                 $each_row_price = $qty * $price;
 
-                $total_item_amt += $each_row_price; ?>
+                $o_total_item_amt += $each_row_price; ?>
 				<tr>
 	            	<td style="text-align:center; width:30px;" valign="top"><?php echo $i + 1; ?></td>
 	                <td style="text-align:left; width:130px; padding-bottom: 10px" valign="top"><?php echo $name; ?><br />[<?php echo $pcode; ?>]</td>
@@ -224,7 +244,7 @@
 	                <td style="text-align:right; width:70px;" valign="top"><?php echo number_format($each_row_price); ?></td>
 				</tr>	
 		<?php
-                $total_item_qty += $qty;
+                $o_total_item_qty += $qty;
 
                 unset($pcode);
                 unset($name);
@@ -243,26 +263,26 @@
     	<tbody>
 			<tr>
 				<td style="text-align:left; padding-top: 5px;"><?php echo $lang_total_items; ?></td>
-				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $total_item_qty; ?></td>
+				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $o_total_item_qty; ?></td>
 				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_total; ?></td>
-				<td style="text-align:right;font-weight:bold;"><?php echo number_format($total_item_amt); ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($o_total_item_amt); ?></td>
 			</tr>    
 			
-			<tr>
+			<!--<tr>
 				<td style="text-align:left; padding-top: 5px;">&nbsp;</td>
 				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">&nbsp;</td>
-				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_tax; ?></td>
+				<td style="text-align:left; padding-left:1.5%;"><?php //echo $lang_tax; ?></td>
 				
 				<td style="text-align:right;font-weight:bold;"><?php
-				$tax_amt = $total_item_amt * 0.1;
-				echo number_format($tax_amt); ?></td>
+				//$tax_amt = $total_item_amt * 0.1;
+				//echo number_format($tax_amt); ?></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;"><?php echo $lang_grand_total; ?></td>
+				<td colspan="2" style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;"><?php //echo $lang_grand_total; ?></td>
 				<td colspan="2" style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;"><?php 
-				$grandTotal = $total_item_amt + $tax_amt;
-				echo number_format($grandTotal); ?></td>
-    		</tr>
+				//$grandTotal = $total_item_amt + $tax_amt;
+				//echo number_format($grandTotal); ?></td>
+    		</tr>-->
     		
     </tbody>
     </table>
@@ -270,12 +290,241 @@
     <div style="border-top:1px solid #000; padding-top:10px;">
     	  
     </div>
-<!--
-        <div id="buttons" style="padding-top:10px; text-transform:uppercase;">
-    <span class="left"><a href="#" style="width:90%; display:block; font-size:12px; text-decoration: none; text-align:center; color:#000; background-color:#4FA950; border:2px solid #4FA950; padding: 10px 1px; font-weight:bold;" id="email">Email</a></span>
-    <span class="right"><button type="button" onClick="window.print();return false;" style="width:100%; cursor:pointer; font-size:12px; background-color:#FFA93C; color:#000; text-align: center; border:1px solid #FFA93C; padding: 10px 1px; font-weight:bold;">Print</button></span>
-    <div style="clear:both;"></div>
--->
+
+	<div style="clear:both;"></div>
+    
+	<table class="table" cellspacing="0"  border="0"> 
+			<tr>
+				<th width="100%" colspan="5"> Returns </th>
+			</tr>
+			<tr>					
+				<th width="10%"><em>#</em></th> 
+				<th width="35%" align="left"><?php echo $lang_products; ?></th>
+				<th width="10%"><?php echo $lang_qty; ?></th>
+				<th width="25%"><?php echo $lang_per_item; ?></th>
+				<th width="20%" align="right"><?php echo $lang_total; ?></th> 
+			</tr> 
+		
+		<tbody> 
+		
+		<?php
+		//report return belum masuk diskon juga
+            $r_total_item_amt = 0;
+            $r_total_item_qty = 0;
+			
+            $returnItemResult = $this->db->query("SELECT ri.id, ri.product_code, ri.product_name, ri.price, sum(ri.qty) as qty
+			FROM return_items as ri inner join orders as o on ri.order_id = o.id
+			where o.created_datetime >= '$hari_ini 00:00:00' AND o.created_datetime <= '$hari_ini 23:59:59'
+			GROUP by ri.product_code  
+			ORDER BY ri.product_name ASC ");
+            $returnItemData = $returnItemResult->result();
+            for ($i = 0; $i < count($returnItemData); ++$i) {
+                $pcode = $returnItemData[$i]->product_code;
+                $name = $returnItemData[$i]->product_name;
+                $qty = $returnItemData[$i]->qty;
+                $price = $returnItemData[$i]->price;
+
+                $each_row_price = 0;
+                $each_row_price = $qty * $price;
+
+                $r_total_item_amt += $each_row_price; ?>
+				<tr>
+	            	<td style="text-align:center; width:30px;" valign="top"><?php echo $i + 1; ?></td>
+	                <td style="text-align:left; width:130px; padding-bottom: 10px" valign="top"><?php echo $name; ?><br />[<?php echo $pcode; ?>]</td>
+	                <td style="text-align:center; width:50px;" valign="top"><?php echo $qty; ?></td>
+	                <td style="text-align:center; width:50px;" valign="top"><?php echo number_format($price); ?></td>
+	                <td style="text-align:right; width:70px;" valign="top"><?php echo number_format($each_row_price); ?></td>
+				</tr>	
+		<?php
+                $r_total_item_qty += $qty;
+
+                unset($pcode);
+                unset($name);
+                unset($qty);
+                unset($price);
+            }
+            unset($returnItemResult);
+            unset($returnItemData);
+        ?>
+			 
+    	</tbody> 
+	</table> 
+	
+    
+    <table class="totals" cellspacing="0" border="0" style="margin-bottom:5px; border-top: 1px solid #000; border-collapse: collapse;">
+    	<tbody>
+			<tr>
+				<td style="text-align:left; padding-top: 5px;"><?php echo $lang_total_items; ?></td>
+				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $r_total_item_qty; ?></td>
+				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_total; ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($r_total_item_amt); ?></td>
+			</tr>  
+			    		
+    </tbody>
+    </table>
+    
+
+	<div style="border-top:1px solid #000; padding-top:10px;">
+    	  
+    </div>
+
+	<div style="clear:both;"></div>
+    
+	<table class="table" cellspacing="0"  border="0"> 
+			<tr>
+				<th width="100%" colspan="5" style="border-bottom:2px solid #000; " > Discount </th>
+			</tr>
+			
+		
+		
+		<tbody> 
+		
+		<?php
+			$total_discount = 0;
+		
+            $discountResult = $this->db->query("SELECT sum(discount_total) as discount_total
+			FROM orders
+			where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' ");
+            $discountData = $discountResult->result();
+            for ($i = 0; $i < count($discountData); ++$i) {
+				$discount = $discountData[$i]->discount_total;
+				
+				$each_row_discount = 0;
+                $each_row_discount = $discount;
+
+                $total_discount += $each_row_discount;
+                ?>
+				<tr>
+					<td style="text-align:left; padding-top: 5px;"><?php echo "Total All Discount"; ?></td>
+					<td style="text-align:right;font-weight:bold;"><?php echo "-".number_format($each_row_discount); ?></td>
+	                
+				</tr>	
+		<?php       
+                unset($discount);
+                
+            }
+            unset($discountResult);
+            unset($discountItemData);
+        ?>
+			 
+    	</tbody> 
+		
+	</table> 
+	
+        
+    
+
+	<div style="clear:both;"></div>
+    
+	<table class="table" cellspacing="0"  border="0"> 
+			<tr>
+				<th width="100%" colspan="5" style="border-bottom: 2px solid #000;"> Summary This Day </th>
+			</tr>
+		
+		
+		<tbody> 		
+		
+				<tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000;"><?php echo "Total Amount All Orders" ?></td>
+					<td style="text-align:right;font-weight:bold;"><?php echo number_format($o_total_item_amt); ?></td>	                
+				</tr>
+				<tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000;"><?php echo "Total Amount All Returns" ?></td>
+					<td style="text-align:right;font-weight:bold;"><?php echo number_format($r_total_item_amt); ?></td>	                
+				</tr>
+				<tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 1px solid #000;"><?php echo "Total Amount All Discount"; ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;"><?php echo "-".number_format($total_discount); ?></td>
+	                
+				</tr>
+				<div style="border-top:1px solid #000; padding-top:10px;">
+    	  
+		 		</div>
+				 <tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 1px solid #000;font-weight:bold;"><?php echo "Total Amount Sales"; ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;"><?php
+					$total_amount = 0;
+					$total_amount = $o_total_item_amt + $r_total_item_amt - $total_discount;
+					echo number_format($total_amount); ?></td>
+	                
+				</tr>
+
+				<?php
+					$o_total_tax = 0;
+				
+					$o_taxResult = $this->db->query("SELECT sum(tax) as tax
+					FROM orders
+					where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' AND status = '1' ");
+					$o_taxData = $o_taxResult->result();
+					for ($i = 0; $i < count($o_taxData); ++$i) {
+						$tax_order = $o_taxData[$i]->tax;
+						
+						$o_each_row_tax = 0;
+						$o_each_row_tax = $tax_order;
+
+						$o_total_tax += $o_each_row_tax;
+						?>
+						 <tr>
+							<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000;"><?php echo "Total Amount Tax Orders" ?></td>
+							<td style="text-align:right;font-weight:bold;"><?php echo number_format($o_each_row_tax); ?></td>	                
+						</tr>	
+				<?php       
+						unset($tax_order);						
+					}
+					unset($o_taxResult);
+					unset($o_taxData);
+				?>
+
+				<?php
+					$r_total_tax = 0;
+				
+					$r_taxResult = $this->db->query("SELECT sum(tax) as tax
+					FROM orders
+					where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' AND status = '2' ");
+					$r_taxData = $r_taxResult->result();
+					for ($i = 0; $i < count($r_taxData); ++$i) {
+						$tax_return = $r_taxData[$i]->tax;
+						
+						$r_each_row_tax = 0;
+						$r_each_row_tax = $tax_return;
+
+						$r_total_tax += $r_each_row_tax;
+						?>
+						 <tr>
+							<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000;"><?php echo "Total Amount Tax Returns" ?></td>
+							<td style="text-align:right;font-weight:bold;"><?php echo number_format($r_each_row_tax); ?></td>	                
+						</tr>	
+				<?php       
+						unset($tax_return);						
+					}
+					unset($r_taxResult);
+					unset($r_taxData);
+				?>
+				
+			 <tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 1px solid #000;font-weight:bold; border-top: 1px solid #000;"><?php echo "Total Amount Tax"; ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000; border-top: 1px solid #000;"><?php
+					$total_tax = 0;
+					$total_tax = $o_each_row_tax + $r_each_row_tax;
+					echo number_format($total_tax); ?>
+					</td>
+	                
+			 </tr>
+
+			 <tr>
+					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 2px solid #000;font-weight:bold; border-top: 1px solid #000;"><?php echo "Grand Total Amount"; ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 2px solid #000; border-top: 1px solid #000;"><?php
+					$grandtotal_amount = 0;
+					$grandtotal_amount = $total_amount + $total_tax;
+					echo number_format($grandtotal_amount); ?>
+					</td>
+	                
+			 </tr>
+			 
+    	</tbody> 
+	</table> 
+	
+
    
     <div id="bkpos_wrp">
     	<a href="<?=base_url()?>pos" style="width:100%; display:block; font-size:12px; text-decoration: none; text-align:center; color:#FFF; background-color:#005b8a; border:0px solid #007FFF; padding: 10px 1px; margin: 5px auto 10px auto; font-weight:bold;"><?php echo $lang_back_to_pos; ?></a>

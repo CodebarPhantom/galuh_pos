@@ -1,7 +1,8 @@
 <?php
     require_once 'includes/pos_header.php';
 ?>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+<script src="<?=base_url()?>assets/cdn/jquery-1.10.2.min.js"></script>
 		 
 <div class="col-sm-12 col-lg-12 main">
 	<div class="row">
@@ -476,11 +477,11 @@
 								<div class="col-md-12">
 								
 								<div class="row">
-									<div class="col-md-6" style="margin-top: 8px;">
+									<!--<div class="col-md-6" style="margin-top: 8px;">
 										<div style="background-color: #c72a25; color: #FFF; text-align: center; font-weight: bold; border-radius: 4px; cursor: pointer; padding-top: 10px; padding-bottom: 10px; width: 100%;" onclick="cancelSelected()">
-											<?php echo $lang_cancel; ?>
+											<?php // echo $lang_cancel; ?>
 										</div>
-									</div>
+									</div>-->
 									<!-- Eryan Fauzan -->
 									<!-- <div class="col-md-4" style="margin-top: 8px;">									
 										<a href="#holdmodel" data-toggle="modal" style="text-decoration: none;">
@@ -578,7 +579,8 @@
                                                 ?>
 											    
 											</div>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<!--<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>-->
+<script src="<?=base_url()?>assets/cdn/jquery-2.2.0.min.js" type="text/javascript"></script>
 <script src="<?=base_url()?>assets/carousel/slick/slick.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 $(document).on('ready', function() {
@@ -1342,7 +1344,8 @@ $(document).on('ready', function() {
 						</div>
 					</div>
 					
-<script type="text/javascript">		
+<script type="text/javascript">	
+	
 	function checkChequePayment(ele){
 		if(ele == "5"){			// Cheque;
 			document.getElementById("paid").readOnly			= false;
@@ -1566,6 +1569,7 @@ $(document).on('ready', function() {
 				});
 		        
 				//document.getElementById("submit_btn").style.display = "block";
+				
 			} else {
 				document.getElementById("submit_btn").style.display = "none";
 			}
@@ -1613,7 +1617,7 @@ $(document).on('ready', function() {
 				</div>
 				
 				<div class="modal-footer" style="margin-top: 0px;">
-					<input type="submit" value="<?php echo $lang_submit; ?>" class="btn btn-primary" id="submit_btn" style="background-color: #3fb618; color: #FFF; border: 0px; padding: 5px 25px; float: right; display: none;" />
+					<input type="submit" value="<?php echo $lang_submit; ?>" class="btn btn-primary" id="submit_btn" style="background-color: #3fb618; color: #FFF; border: 0px; padding: 5px 25px; float: right; display: none;" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();"  />
 				</div>
 			</div>
 		</div>
@@ -1642,6 +1646,7 @@ $(document).on('ready', function() {
 
 
 <script>
+	
 	
 		
 	var logDiv = $( "#log" );
@@ -2497,11 +2502,13 @@ $(document).on('ready', function() {
 		
 		if( (paid_by == "6") || (paid_by == "7") ){
 			document.getElementById("submit_btn").style.display		= "block";
+			
 		} else {
 			if(change_amt < 0){
 				document.getElementById("submit_btn").style.display 	= "none";
 			} else {
 				document.getElementById("submit_btn").style.display		= "block";
+				
 			}
 		}
 	}
