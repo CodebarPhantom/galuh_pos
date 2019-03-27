@@ -1023,8 +1023,7 @@ class Reports extends CI_Controller
                             $oItem_dis_amt = 0;
                         } elseif (strpos($oItem_discount, '%') > 0) {
                             $temp_dis_Array= explode('%', $oItem_discount);                    
-                            $temp_dis = $temp_dis_Array[0];                            
-                            $temp_item_price = 0;  
+                            $temp_dis = $temp_dis_Array[0]; 
                             $oItem_dis_amt=0;                        
                             $oItem_dis_amt = "-".($oItem_price * ($temp_dis / 100) * $oItemData[$t]->qty);
                         }else{
@@ -1068,16 +1067,20 @@ class Reports extends CI_Controller
              } elseif ($order_type == '2') {    // Return;
                  $type_name = 'Return';
                  if ($category_tenant=="all"){
-                    $rItemResult = $this->db->query("SELECT r.id, r.order_id, r.product_code, r.product_name,r.cost, r.price, r.qty, c.name as tenant, c.id
-                 FROM return_items as r 
-                 LEFT JOIN category as c ON r.product_category = c.id
-                 WHERE order_id = '$order_id' ORDER BY r.id ");
+                    $rItemResult = $this->db->query("SELECT r.id, r.order_id, r.product_code, r.product_name,r.cost, r.price, r.qty, o.discount_percentage,c.name as tenant,c.id, p.promotion_name
+                                  FROM return_items as r 
+                                  LEFT JOIN orders as o on o.id = r.order_id 
+                                  LEFT JOIN category as c ON r.product_category = c.id
+                                  LEFT JOIN promotion as p on p.id = o.promo_id
+                                  WHERE order_id = '$order_id'  ORDER BY r.id ");
                  }
                    else{
-                    $rItemResult = $this->db->query("SELECT r.id, r.order_id, r.product_code, r.product_name,r.cost, r.price, r.qty, c.name as tenant, c.id
-                 FROM return_items as r 
-                 LEFT JOIN category as c ON r.product_category = c.id
-                 WHERE order_id = '$order_id' AND c.id = '$category_tenant' ORDER BY r.id ");
+                    $rItemResult = $this->db->query("SELECT r.id, r.order_id, r.product_code, r.product_name,r.cost, r.price, r.qty, o.discount_percentage,c.name as tenant,c.id, p.promotion_name
+                                FROM return_items as r 
+                                LEFT JOIN orders as o on o.id = r.order_id 
+                                LEFT JOIN category as c ON r.product_category = c.id
+                                LEFT JOIN promotion as p on p.id = o.promo_id
+                                WHERE order_id = '$order_id' AND c.id = '$category_tenant' ORDER BY r.id ");
                  }
                  
                  $rItemRows = $rItemResult->num_rows();
@@ -1089,12 +1092,24 @@ class Reports extends CI_Controller
                          $rItem_pname = $rItemData[$r]->product_name;
                          $rItem_cname = $rItemData[$r]->tenant;
                          $rItem_qty = $rItemData[$r]->qty;
-                         $rItem_price = $rItemData[$r]->price;
+                         $rItem_price = $rItemData[$r]->price;  
+                         $rItem_promotion = $rItemData[$r]->promotion_name;
+                         $rItem_discount = $rItemData[$r]->discount_percentage;   
+                         if ($rItem_discount == 0) {
+                            $rItem_dis_amt = 0;
+                        } elseif (strpos($rItem_discount, '%') > 0) {
+                            $temp_dis_Array= explode('%', $rItem_discount);                    
+                            $temp_dis = $temp_dis_Array[0]; 
+                            $rItem_dis_amt=0;                        
+                            $rItem_dis_amt = "-".($rItem_price * ($temp_dis / 100) * $rItemData[$t]->qty);
+                        }else{
+                            $rItem_dis_amt = $rItem_discount;
+                        }
                          $rItem_gross = $rItemData[$r]->price * $rItemData[$r]->qty;
-                         $rItem_subtotal = $rItemData[$r]->price * $rItemData[$r]->qty;
+                        
+                         $rItem_subtotal = ($rItemData[$r]->price * $rItemData[$r]->qty) + $rItem_dis_amt;
                          $rItem_tax = $rItem_subtotal * 0.1;
-                         $rItem_grandtotal = $rItem_subtotal + $rItem_tax;
-
+                         $rItem_grandtotal = $rItem_subtotal + $rItem_tax;   
  
                          array_push($pcodeArray, $rItem_pcode);
                          array_push($pnameArray, $rItem_pname);
@@ -1104,7 +1119,9 @@ class Reports extends CI_Controller
                          array_push($taxArray, $rItem_tax);
                          array_push($grandtotalArray, $rItem_grandtotal);
                          array_push($grossArray, $rItem_gross);
+                         array_push($promotionArray, $rItem_promotion);
                          array_push($categoryArray, $rItem_cname);
+                         array_push($discountArray, $rItem_dis_amt);   
 
  
                          unset($rItem_pcode);
@@ -1116,6 +1133,8 @@ class Reports extends CI_Controller
                          unset($rItem_tax);
                          unset($rItem_grandtotal);
                          unset($rItem_cname);
+                         unset($rItem_promotion);
+                         unset($rItem_dis_amt);
                      }
  
                      unset($rItemData);
@@ -1207,8 +1226,7 @@ class Reports extends CI_Controller
             } else {
                 $objPHPExcel->getActiveSheet()->setCellValue("M$jj", '');
             }
-            //$objPHPExcel->getActiveSheet()->setCellValue("M$jj", "$subtot");  
-            //$objPHPExcel->getActiveSheet()->setCellValue("N$jj", "$inputs");  
+          
                          
  
              $objPHPExcel->getActiveSheet()->getStyle("A$jj")->applyFromArray($account_value_style_header);

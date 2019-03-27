@@ -456,15 +456,7 @@
             	</td>
                 
             	<td>
-                    <?php
-                       if ($promotion_name != 'No Promotion') {?>
-                            <a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
-                            <i class="icono-document" style="color: #005b8a;"></i>
-                            </a>
-                            <a href="<?=base_url()?>sales/deleteSale?id=<?php echo $order_id; ?>" style="text-decoration: none; margin-left: 5px;" title="Delete" onclick="return confirm('Are you confirm to delete this Sale?')">
-							    <i class="icono-crossCircle" style="color: #F00"></i>
-							</a>
-                       <?php }else if ($order_type == '1') {  ?>
+                        <?php  if ($order_type == '1') {  ?>
                             <a onclick="openReceipt('<?=base_url()?>pos/view_invoice?id=<?php echo $order_id; ?>')" style="text-decoration: none; cursor: pointer;" title="Print Receipt">
                                 <i class="icono-document" style="color: #005b8a;"></i>
                             </a>
