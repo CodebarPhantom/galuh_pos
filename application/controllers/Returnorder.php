@@ -176,6 +176,8 @@ class Returnorder extends CI_Controller
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
 
+        $data['item_return'] = $this->Returnorder_model->item_return($sales_id);
+
         $this->load->view('create_return', $data);
     }
 

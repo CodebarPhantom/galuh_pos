@@ -489,11 +489,10 @@
 										<tbody>
 										<?php $no = 1; ?>
 										<?php foreach($item_return as $look) { ?>
-										<?php $no++; ?>
 										<tr>
 											<td><?=$look->product_code; ?></td>
 											<td><?=$look->product_name; ?></td>
-											<td><input type="text" class="form-control" name="qty_<?php echo $no;?>" value="<?=$look->qty; ?>" style="width: 50%;" /></td>
+											<td><input type="text" class="form-control" name="qty_<?php echo $no;?>" value="1" style="width: 50%;" /></td>
 											<td> <input id="box_<?php echo $no;?>" type="checkbox" name="cond_<?php echo $no;?>" /><label for="box_<?php echo $no;?>"><?php echo $lang_good; ?></label> </td><td><a onclick="deletediv('<?php echo $no;?>')" style="cursor:pointer"><i class="icono-cross" style="color:#F00;"></i></a></td>
 										</tr>
 										<input type="hidden" class="form-control" name="pcode_<?php echo $no;?>" value="<?=$look->product_code; ?>" />
