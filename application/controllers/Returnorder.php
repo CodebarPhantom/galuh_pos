@@ -175,7 +175,8 @@ class Returnorder extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
-
+        $data['lang_gross_sales'] = $this->lang->line('gross_sales');
+        $data['lang_sale_id'] = $this->lang->line('sale_id');
         $data['item_return'] = $this->Returnorder_model->item_return($sales_id);
 
         $this->load->view('create_return', $data);
@@ -549,7 +550,8 @@ class Returnorder extends CI_Controller
         $cust_id = $this->input->post('customer');
         $outlet = $this->input->post('outlet');
         $remark = $this->input->post('remark');
-
+        $promo_id = $this->input->post('promo_id');
+        $dis_amt = $this->input->post('dis_amt');
         $refund_amt = $this->input->post('refund_amt');
         $refund_tax = $this->input->post('refund_tax');
         $refund_grand = $this->input->post('refund_grand');
@@ -562,6 +564,27 @@ class Returnorder extends CI_Controller
 
         $us_id = $this->session->userdata('user_id');
         $tm = date('Y-m-d H:i:s', time());
+
+        if ($dis_amt == 0) {
+            $discount_amount = 0;
+            $refund_amount = $refund_amt;
+            $refund_taxamt = $refund_tax;
+            $refund_grandamt = $refund_grand;
+        } elseif (strpos($dis_amt, '%') > 0) {
+            $temp_dis_Array= explode('%', $dis_amt);                    
+            $temp_dis = $temp_dis_Array[0]; 
+            $discount_amount = 0;  
+            $refund_amount = 0;
+            $refund_taxamt = 0;
+            $refund_grandamt = 0;                      
+
+            $discount_amount = ($refund_amt * ($temp_dis / 100));
+            $refund_amount = ($refund_amt  - $discount_amount);
+            $refund_taxamt = ($refund_amount * ($temp_dis / 100));
+            $refund_grandamt = ($refund_amount + $refund_taxamt);
+           
+            
+        }
 
         $custDta = $this->Constant_model->getDataOneColumn('customers', 'id', $cust_id);
         $cust_full = $custDta[0]->fullname;
@@ -603,10 +626,7 @@ class Returnorder extends CI_Controller
                     'outlet_address' => $outlet_address,
                     'outlet_contact' => $outlet_contact,
                     'outlet_receipt_footer' => $outlet_footer,
-                    'subtotal' => '-'.$refund_amt,
-                    'discount_total' => '0',
-                    'tax' => '-'.$refund_tax,
-                    'grandtotal' => '-'.$refund_grand,
+                    
                     'total_items' => $total_item_qty,
                     'payment_method' => $refund_by,
                     'payment_method_name' => $pay_name,
@@ -619,7 +639,12 @@ class Returnorder extends CI_Controller
                     'refund_status' => $refund_method,
                     'remark' => $remark,
 
-                    'promo_id'=>'1'
+                    'promo_id'=>$promo_id,
+                    'discount_percentage'=>$dis_amt,
+                    'subtotal' => '-'.$refund_amount,
+                    'discount_total' => $discount_amount,
+                    'tax' => '-'.$refund_taxamt,
+                    'grandtotal' => '-'.$refund_grandamt
             );
             $order_id = $this->Constant_model->insertDataReturnLastId('orders', $ins_order_data);
 

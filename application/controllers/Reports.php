@@ -576,10 +576,14 @@ class Reports extends CI_Controller
                 $order_type = $orderData[$od]->status;
                 $gross_sales = $subTotal + $discount_total;
                 $type_name = '';
+
+
                 if ($order_type == '1') {
                     $type_name = 'Sale';
+                    $gross_sales = $subTotal+$discount_total;
                 } elseif ($order_type == '2') {
                     $type_name = 'Return';
+                    $gross_sales = $subTotal-$discount_total;
                 }
 
                 if (!empty($cheque_numb)) {
@@ -1101,13 +1105,13 @@ class Reports extends CI_Controller
                             $temp_dis_Array= explode('%', $rItem_discount);                    
                             $temp_dis = $temp_dis_Array[0]; 
                             $rItem_dis_amt=0;                        
-                            $rItem_dis_amt = "-".($rItem_price * ($temp_dis / 100) * $rItemData[$t]->qty);
+                            $rItem_dis_amt = ($rItem_price * ($temp_dis / 100) * $rItemData[$r]->qty);
                         }else{
                             $rItem_dis_amt = $rItem_discount;
                         }
                          $rItem_gross = $rItemData[$r]->price * $rItemData[$r]->qty;
                         
-                         $rItem_subtotal = ($rItemData[$r]->price * $rItemData[$r]->qty) + $rItem_dis_amt;
+                         $rItem_subtotal = ($rItemData[$r]->price * $rItemData[$r]->qty) - $rItem_dis_amt;
                          $rItem_tax = $rItem_subtotal * 0.1;
                          $rItem_grandtotal = $rItem_subtotal + $rItem_tax;   
  
@@ -1315,10 +1319,10 @@ class Reports extends CI_Controller
          $total_tax_amt = number_format($total_tax_amt, 2, '.', '');
          $total_grand_amt = number_format($total_grand_amt, 2, '.', '');*/
  
-         $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$jj:F$jj");
+         $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$jj:G$jj");
          $objPHPExcel->getActiveSheet()->setCellValue("A$jj", "$lang_total");
      
-         $objPHPExcel->getActiveSheet()->SetCellValue('G'.$jj, "=SUM(G3:G".($jj-1).")");  
+        
          $objPHPExcel->getActiveSheet()->SetCellValue('I'.$jj, "=SUM(I3:I".($jj-1).")");          
          $objPHPExcel->getActiveSheet()->SetCellValue('J'.$jj, "=SUM(J3:J".($jj-1).")");  
          $objPHPExcel->getActiveSheet()->SetCellValue('K'.$jj, "=SUM(K3:K".($jj-1).")");  

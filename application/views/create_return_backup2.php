@@ -260,8 +260,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label style="font-size: 13px;"><?php echo $lang_customers; ?> <span style="color: #F00">*</span></label>
-								<!--<select name="customer" class="form-control" required id="customerSearch"> -->
-								<select name="customer" class="form-control" required >
+								<select name="customer" class="form-control" required id="customerSearch">
 									<option value=""><?php echo $lang_search_customer; ?></option>
 								<?php
                                     $custResult = $this->db->query('SELECT * FROM customers ORDER BY fullname');
@@ -521,7 +520,6 @@
 											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_product_name; ?></th>
 											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_return_quantity; ?></th>
 											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_condition; ?></th>
-											<th width="10%" style="background-color: #686868; color: #FFF;"><?php echo $lang_action; ?></th>
 											
 										</tr>
 									</thead>
@@ -561,12 +559,10 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group" style="text-align: center;">
-								<input type="hidden" name="dis_amt" id="dis_amt" value="<?php  $dis_amt = 0; echo $dis_amt; ?>"  />
-								<input type="hidden" id="row_count" name="row_count" value="<?php echo count($item_return)+1; ?>" />
-								<input type="hidden" name="promo_id" id="promo_id" value="1"/>
+								<input type="hidden" id="row_count" name="row_count" value="<?php echo $row_count+1;?>" />
 								<button class="btn btn-primary" style="padding: 12px 20px;">
 									<?php echo $lang_submit; ?>
-								</button>		
+								</button>
 							</div>
 						</div>
 					</div>
@@ -848,23 +844,6 @@
 <!-- Select2 -->
 <script>
 	$(document).ready(function() {
-
-		$("#active_promo").change(function () {
-		var cntrol = $(this);	
- 		var idpromo = cntrol.find(':selected').data("idpromo");
-		var value = cntrol.val();     
-		const event = $.Event('keyup');
-  		event.which = 13;
-  		event.keyCode = 13;	
-  		
- 		 document.getElementById("dis_amt").value = value;
-		  
-		 document.getElementById("dis_amt").focus();
-		 $("#dis_amt").trigger(event);
-		 document.getElementById("promo_id").value = idpromo;
-
- 		});
-
 		$(".add_product_po").select2({
 			placeholder: "<?php echo $lang_search_product_by_namecode; ?>",
 			allowClear: true

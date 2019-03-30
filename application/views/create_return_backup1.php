@@ -63,15 +63,34 @@
 							
 							
 						} else {
+							<?php if ($url_sales_id>0) { ?>
 							
+								<?php foreach($item_return as $look) { ?>
+									
+								var cell = $('<tr id="row_'+row_count+'"><td>'+<?=$look->product_code; ?>+'</td><td>'+<?=$look->product_name; ?>+'</td><td><input type="text" class="form-control" name="qty_'+row_count+'" value="1" style="width: 50%;" /></td><td> <input id="box_'+row_count+'" type="checkbox" name="cond_'+row_count+'" /><label for="box_'+row_count+'"><?php echo $lang_good; ?></label> </td><td><a onclick="deletediv('+row_count+')" style="cursor:pointer"><i class="icono-cross" style="color:#F00;"></i></a></td></tr><input type="hidden" class="form-control" name="pcode_'+row_count+'" value="'+<?=$look->product_code; ?>+'" />');
+								row_count++;
+								<?php }?>
+					
+								$('#addItemWrp').append(cell);
+								
+							
+							
+								
+								document.getElementById("typeahead").value 	= "";
+								document.getElementById("row_count").value 	= row_count;
+							<?php }else{ ?>
 								var cell = $('<tr id="row_'+row_count+'"><td>'+pcode+'</td><td>'+name+'</td><td><input type="text" class="form-control" name="qty_'+row_count+'" value="1" style="width: 50%;" /></td><td> <input id="box_'+row_count+'" type="checkbox" name="cond_'+row_count+'" /><label for="box_'+row_count+'"><?php echo $lang_good; ?></label> </td><td><a onclick="deletediv('+row_count+')" style="cursor:pointer"><i class="icono-cross" style="color:#F00;"></i></a></td></tr><input type="hidden" class="form-control" name="pcode_'+row_count+'" value="'+pcode+'" />');
 		        
-		         				$('#addItemWrp').append(cell);								
-							   
+		         
+								$('#addItemWrp').append(cell);
+								
+							
 								row_count++;
-						
-					        document.getElementById("typeahead").value 	= "";
-					        document.getElementById("row_count").value 	= row_count;
+								
+								document.getElementById("typeahead").value 	= "";
+								document.getElementById("row_count").value 	= row_count;
+
+								<?php }?>
 						}
 						
 					}
@@ -260,8 +279,7 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label style="font-size: 13px;"><?php echo $lang_customers; ?> <span style="color: #F00">*</span></label>
-								<!--<select name="customer" class="form-control" required id="customerSearch"> -->
-								<select name="customer" class="form-control" required >
+								<select name="customer" class="form-control" style="width: 100%;" required id="customerSearch">
 									<option value=""><?php echo $lang_search_customer; ?></option>
 								<?php
                                     $custResult = $this->db->query('SELECT * FROM customers ORDER BY fullname');
@@ -293,7 +311,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label style="font-size: 13px;"><?php echo $lang_outlets; ?> <span style="color: #F00">*</span></label>
-								<select name="outlet"  class="form-control" required>
+								<select name="outlet" class="form-control" required>
 									<option value=""><?php echo $lang_search_outlet; ?></option>
 								<?php
                                     if ($user_role == 1) {
@@ -338,7 +356,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
-								<label style="font-size: 13px;"><?php echo $lang_gross_sales; ?> (<?php echo $currency; ?>)</label>
+								<label style="font-size: 13px;"><?php echo $lang_refund_amount; ?> (<?php echo $currency; ?>)</label>
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -380,46 +398,18 @@
 					<input type="hidden" id="tax" value="<?php echo $tax; ?>" />
 					
 					
-					<script type="text/javascript">		
-						function checkChequePayment(ele){
-							if(ele == "5"){
-								document.getElementById("cheque_wrp").style.display = "block";
-								document.getElementById("cheque").required = true;
-								document.getElementById("cheque").focus();
-							} else {
-								document.getElementById("cheque_wrp").style.display = "none";
-								document.getElementById("cheque").required = false;
-							}
-						}
-					</script>					
-					
-
-					<div class="row" style="padding-top: 5px; padding-bottom: 5px;">
-						<div class="col-md-3">
-							<div class="form-group">
-								<label style="font-size: 13px;"><?php echo $lang_promotion; ?></label>
-							</div>
-						</div>
-						<div class="col-md-4">
-									<select name="promo_category" id="active_promo" class="form-control" required>
-											
-											<?php
-												$promoData = $this->Constant_model->getDataOneColumn('promotion', 'status', '1');
-												for ($p = 0; $p < count($promoData); ++$p) {
-													$promo_id = $promoData[$p]->id;
-													$promotion_name = $promoData[$p]->promotion_name;
-													$discount = $promoData[$p]->discount_percentage ?>
-										<option value="<?php echo $discount;?>" data-idpromo="<?php echo $promo_id;?>"><?php echo $promotion_name; ?></option>
-											<?php
-												}
-											?>
-									</select>
-						</div>
-						<div class="col-md-5" style="padding-top: 10px; color: #afb1b2;">
-							* <?php echo $lang_return_invoice_effect; ?>
-						</div>
-					</div>
-
+<script type="text/javascript">		
+	function checkChequePayment(ele){
+		if(ele == "5"){
+			document.getElementById("cheque_wrp").style.display = "block";
+			document.getElementById("cheque").required = true;
+			document.getElementById("cheque").focus();
+		} else {
+			document.getElementById("cheque_wrp").style.display = "none";
+			document.getElementById("cheque").required = false;
+		}
+	}
+</script>					
 					<div class="row" style="padding-top: 5px; padding-bottom: 5px;">
 						<div class="col-md-3">
 							<div class="form-group">
@@ -475,8 +465,6 @@
 						</div>
 						<div class="col-md-5"></div>
 					</div>
-
-					
 					
 					<div class="row" style="margin-top: 5px;">
 						<div class="col-md-12" style="border-top: 1px solid #ccc;"></div>
@@ -513,42 +501,22 @@
 										
 					<div class="row">
 						<div class="col-md-12">
-							<div class="table-responsive">
-								<table class="table">
-									<thead>
-										<tr>
-											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_product_code; ?></th>
-											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_product_name; ?></th>
-											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_return_quantity; ?></th>
-											<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_condition; ?></th>
-											<th width="10%" style="background-color: #686868; color: #FFF;"><?php echo $lang_action; ?></th>
-											
-										</tr>
-									</thead>
-									<?php if ($url_sales_id>0) { ?>
-										<tbody>
-										<?php $row_count = 0; ?>
-										<?php foreach($item_return as $look) { ?>
-										<?php $row_count++; ?>
-										<tr id="row_<?php echo  $row_count  ?>">
-											<td><?=$look->product_code; ?></td>
-											<td><?=$look->product_name; ?></td>
-											<td><input type="text" class="form-control" name="qty_<?php echo $row_count;?>" value="<?=$look->qty; ?>" style="width: 50%;" /></td>
-											<td> <input id="box_<?php echo $row_count;?>" type="checkbox" name="cond_<?php echo $row_count;?>" /><label for="box_<?php echo $row_count;?>"><?php echo $lang_good; ?></label> </td>
-											
-										</tr>
-										<input type="hidden" class="form-control" name="pcode_<?php echo $row_count;?>" value="<?=$look->product_code; ?>" />
-											<?php } ?>
-										</tbody>
-										
-									<?php }else{ ?>
-										<tbody id="addItemWrp">
-									
-										</tbody>
-									<?php }?>
-
-								</table>
-							</div>
+<div class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+		    	<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_product_code; ?></th>
+		    	<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_product_name; ?></th>
+		    	<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_return_quantity; ?></th>
+		    	<th width="20%" style="background-color: #686868; color: #FFF;"><?php echo $lang_condition; ?></th>
+			    <th width="10%" style="background-color: #686868; color: #FFF;"><?php echo $lang_action; ?></th>
+			</tr>
+		</thead>
+		<tbody id="addItemWrp">
+		
+		</tbody>
+	</table>
+</div>
 						</div>
 					</div>
 					
@@ -561,12 +529,10 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group" style="text-align: center;">
-								<input type="hidden" name="dis_amt" id="dis_amt" value="<?php  $dis_amt = 0; echo $dis_amt; ?>"  />
-								<input type="hidden" id="row_count" name="row_count" value="<?php echo count($item_return)+1; ?>" />
-								<input type="hidden" name="promo_id" id="promo_id" value="1"/>
+								<input type="hidden" id="row_count" name="row_count" value="1" />
 								<button class="btn btn-primary" style="padding: 12px 20px;">
 									<?php echo $lang_submit; ?>
-								</button>		
+								</button>
 							</div>
 						</div>
 					</div>
@@ -687,11 +653,10 @@
                         $payNameData = $this->Constant_model->getDataOneColumn('payment_method', 'id', $pay_method_id);
                         $pay_method_name = $payNameData[0]->name; ?>
 <div id="wrapper">
-    <h2 style="padding-top: 0px; padding-bottom: 20px; font-size: 22px;"><strong><?php echo $outlet_name; ?></strong></h2>
+	<h2 style="padding-top: 0px; padding-bottom: 20px; font-size: 22px;"><strong><?php echo $outlet_name; ?></strong></h2>
 	<span class="left"><?php echo $lang_address; ?> : <?php echo $outlet_address; ?></span>	
 	<span class="left"><?php echo $lang_sale_id; ?> : <?php echo $sales_id; ?></span> 
 	<span class="left"><?php echo $lang_date; ?> : <?php echo $ordered_dtm; ?></span>
-	
 	    
 	<div style="clear:both;"></div>
     
@@ -749,7 +714,7 @@
 			<tr>
 				<td style="text-align:left; padding-top: 5px;"><?php echo $lang_total_items; ?></td>
 				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $total_item_qty; ?></td>
-				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_total." (".$lang_gross_sales.")"; ?></td>
+				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_total; ?></td>
 				<td style="text-align:right;font-weight:bold;"><?php echo number_format($total_item_amt, 2, '.', ''); ?></td>
 			</tr>
     
@@ -848,23 +813,6 @@
 <!-- Select2 -->
 <script>
 	$(document).ready(function() {
-
-		$("#active_promo").change(function () {
-		var cntrol = $(this);	
- 		var idpromo = cntrol.find(':selected').data("idpromo");
-		var value = cntrol.val();     
-		const event = $.Event('keyup');
-  		event.which = 13;
-  		event.keyCode = 13;	
-  		
- 		 document.getElementById("dis_amt").value = value;
-		  
-		 document.getElementById("dis_amt").focus();
-		 $("#dis_amt").trigger(event);
-		 document.getElementById("promo_id").value = idpromo;
-
- 		});
-
 		$(".add_product_po").select2({
 			placeholder: "<?php echo $lang_search_product_by_namecode; ?>",
 			allowClear: true

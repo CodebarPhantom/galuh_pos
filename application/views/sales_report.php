@@ -420,9 +420,12 @@
 	            	<?php echo $promotion_name; ?>
             	</td>
             	<td> 
-                    <?php 
-                    
-                    echo number_format($subTotal+$discount_total); ?>
+                    <?php  if ($order_type == '1'){
+                        echo number_format($subTotal+$discount_total);
+                    } if ($order_type == '2'){
+                        echo number_format($subTotal-$discount_total);
+                    }                  
+                     ?>
             	</td>
                 <td>                      
                     <?php 

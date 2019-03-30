@@ -16,7 +16,8 @@
     $ret_staff_id = $returnData[0]->created_user_id;
     $ret_vt_status = $returnData[0]->refund_status;
     $ret_remark = $returnData[0]->remark;
-
+	$ret_dis_percentage = $returnData[0]->discount_percentage;
+	$ret_dis_amt = $returnData[0]->discount_total;
     $outlet_name = $returnData[0]->outlet_name;
     $outlet_address = $returnData[0]->outlet_address;
     $outlet_contact = $returnData[0]->outlet_contact;
@@ -141,7 +142,7 @@
                 $each_row_price = $qty * $price;
 
                 $total_item_qty += $qty;
-
+				$total_item_amt += $each_row_price;
                 $p_name = '';
                 $pNameData = $this->Constant_model->getDataOneColumn('products', 'code', $pcode);
                 if (count($pNameData) == 1) {
@@ -179,36 +180,43 @@
 		
 		
 		
-			 
     	</tbody> 
 	</table> 
 	
     
     <table class="totals" cellspacing="0" border="0" style="margin-bottom:5px; border-top: 1px solid #000;">
     	<tbody>
-	    	<!--
+	    	
 			<tr>
 				<td style="text-align:left; padding-top: 5px;">Total Items</td>
 				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $total_item_qty; ?></td>
 				<td style="text-align:left; padding-left:1.5%;">Refund Amt.</td>
-				<td style="text-align:right;font-weight:bold;"><?php echo number_format($ret_paid_amt, 2); ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($total_item_amt, 2); ?></td>
 			</tr>
-			-->
 			<tr>
-				<td style="text-align:left; padding-top: 5px;"><?php echo $lang_total_items; ?></td>
-				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"><?php echo $total_item_qty; ?></td>
+				<td style="text-align:left;"></td>
+				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"></td>
+				<td style="text-align:left; padding-left:1.5%; padding-bottom: 5px;"><?php echo $lang_discount; ?>&nbsp;<?php if (!empty($ret_dis_percentage)) {
+                        echo '('.$ret_dis_percentage.')';
+                    } ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($ret_dis_amt); ?></td>
+			</tr>
+			
+			<tr>
+			<td style="text-align:left; padding-top: 5px;"></td>
+				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;"></td>
 				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_sub_total; ?></td>
-				<td style="text-align:right;font-weight:bold;"><?php echo number_format($ret_subTotal, 2); ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($ret_subTotal); ?></td>
 			</tr>
 			<tr>
 				<td style="text-align:left; padding-top: 5px;">&nbsp;</td>
 				<td style="text-align:right; padding-right:1.5%; border-right: 1px solid #000;font-weight:bold;">&nbsp;</td>
 				<td style="text-align:left; padding-left:1.5%;"><?php echo $lang_tax; ?></td>
-				<td style="text-align:right;font-weight:bold;"><?php echo $ret_taxTotal; ?></td>
+				<td style="text-align:right;font-weight:bold;"><?php echo number_format($ret_taxTotal); ?></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;"><?php echo $lang_grand_total; ?></td>
-				<td colspan="2" style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;"><?php echo $ret_grandTotal; ?></td>
+				<td colspan="2" style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;"><?php echo number_format($ret_grandTotal); ?></td>
     		</tr>
     		
 	    	<tr>

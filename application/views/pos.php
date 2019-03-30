@@ -401,11 +401,11 @@
 										<div class="col-md-12" style="padding-left: 0px; padding-right: 0px;">
 											<table border="0" style="border-collapse: collapse;" width="100%" height="auto">
 												<tr>
+													<!--<td width="30%" height="25px">
+														<?php // echo $lang_dis_amt; ?>/% : 
+													</td>-->
 													<td width="30%" height="25px">
-														<?php echo $lang_dis_amt; ?>/% : 
-													</td>
-													<td width="20%" height="25px">
-														<input type="text" name="dis_amt" id="dis_amt" value="<?php echo $dis_amt; ?>" style="width: 100%; color: #000; font-size: 13px; font-weight: normal; border: 0px; padding-left: 5px; font-family: Arial, Helvetica, sans-serif; padding-top: 5px; padding-bottom: 5px;" onkeyup="calculateDiscount(this.value)" />														
+														<input type="hidden" name="dis_amt" id="dis_amt" value="<?php echo $dis_amt; ?>" style="width: 100%; color: #000; font-size: 13px; font-weight: normal; border: 0px; padding-left: 5px; font-family: Arial, Helvetica, sans-serif; padding-top: 5px; padding-bottom: 5px;" onkeyup="calculateDiscount(this.value)" />														
 													</td>
 													<td width="30%" height="25px" align="right">
 														<?php echo $lang_tax; ?> (<?php echo $tax; ?>%) :
@@ -416,16 +416,7 @@
 												</tr>
 											</table>
 										</div>
-										<!--
-										<div class="col-md-4">Disc. Amt. / % : </div>
-										<div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
-											<input type="text" name="dis_amt" id="dis_amt" value="<?php // echo $dis_amt; ?>" style="width: 100%; color: #000; font-size: 13px; font-weight: normal; border: 0px; padding-left: 5px; font-family: Arial, Helvetica, sans-serif; padding-top: 5px; padding-bottom: 5px;" onkeyup="calculateDiscount(this.value)" />
-										</div>
-										<div class="col-md-3" style="text-align: right;">Tax (<?php //echo $tax; ?>%) : </div>
-										<div class="col-md-3" style="text-align: right;">
-											<div id="display_tax_amt"><?php //echo $tax_amt; ?></div>
-										</div>
-										-->
+										
 									</div>
 								
 									<div class="row" style="margin: 0px; font-weight: bold; color: #FFF; padding-top: 7px; padding-bottom: 7px; font-size: 13px; border-top: 1px solid #dddddd;">
@@ -457,7 +448,7 @@
 														$promo_id = $promoData[$p]->id;
 														$promotion_name = $promoData[$p]->promotion_name;
 														$discount = $promoData[$p]->discount_percentage ?>
-											<option value="<?php echo $discount;?>" data-idpromo="<?php echo $promo_id;?>"><?php echo $promotion_name; ?></option>
+												<option value="<?php echo $discount;?>" data-idpromo="<?php echo $promo_id;?>"><?php echo $promotion_name; ?></option>
 												<?php
 													}
 												?>
