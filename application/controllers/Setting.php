@@ -116,6 +116,7 @@ class Setting extends CI_Controller
         $data['lang_name'] = $this->lang->line('name');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_profit_sharing'] = $this->lang->line('profit_sharing');
 
         $this->load->view('system_setting', $data);
     }
@@ -1574,6 +1575,8 @@ class Setting extends CI_Controller
         $display_product = strip_tags($this->input->post('display_product'));
         $display_keyboard = strip_tags($this->input->post('display_keyboard'));
         $default_customer = strip_tags($this->input->post('default_customer'));
+        $profit1 = strip_tags($this->input->post('profit1'));
+        $profit2 = strip_tags($this->input->post('profit2'));
 
         $us_id = $this->session->userdata('user_id');
         $tm = date('Y-m-d H:i:s', time());
@@ -1666,6 +1669,8 @@ class Setting extends CI_Controller
                     'default_customer_id' => $default_customer,
                     'updated_user_id' => $us_id,
                     'updated_datetime' => $tm,
+                    'profit1' => $profit1,
+                    'profit2' => $profit2
             );
             if ($this->Constant_model->updateData('site_setting', $update_data, '1')) {
                 $this->session->set_flashdata('alert_msg', array('success', 'Update Site Setting', 'Successfully updated Site Setting.'));

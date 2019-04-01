@@ -320,9 +320,13 @@
     $lang['margin_80'] = 'Margin 80%';
     $lang['margin_20'] = 'Margin 20%';
 
+    $lang['margin'] = 'Margin';
+
     $lang['closing_sales'] = 'Closing Sales';
 
     $lang['gross_sales'] = 'Gross Sales';
     $lang['net_sales']= 'Net Sales';
+
+    $lang ['profit_sharing'] = 'Profit Sharing';
 
 

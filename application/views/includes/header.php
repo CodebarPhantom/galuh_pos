@@ -25,6 +25,8 @@
     $setting_keyboard = $settingData->display_keyboard;
 	$setting_customer_id = $settingData->default_customer_id;
 	$setting_image = $settingData->site_logo;
+	$setting_profit1 = $settingData->profit1;
+	$setting_profit2 = $settingData->profit2;
 
     if (isset($_COOKIE['outlet'])) {
         $this->load->helper('cookie');

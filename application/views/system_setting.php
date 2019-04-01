@@ -12,7 +12,9 @@
     $display_product = $siteDtaData[0]->display_product;
     $keyborad = $siteDtaData[0]->display_keyboard;
     $def_cust_id = $siteDtaData[0]->default_customer_id;
-    $site_logo = $siteDtaData[0]->site_logo;
+	$site_logo = $siteDtaData[0]->site_logo;
+	$profit1 = $siteDtaData[0]->profit1;
+	$profit2 = $siteDtaData[0]->profit2;
 ?>
 
 <style type="text/css">
@@ -270,8 +272,18 @@
 							</div>
 							
 						</div>
-						<div class="col-md-4"></div>
-						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo $lang_profit_sharing.' 1'; ?> <span style="color: #F00"></span></label>
+								<input type="text" name="profit1" class="form-control" placeholder="0.75" maxlength="499" autofocus required value="<?php echo $profit1; ?>" autocomplete="off" />
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label><?php echo  $lang_profit_sharing.' 2';; ?> <span style="color: #F00"></span></label>
+								<input type="text" name="profit2" class="form-control" placeholder="0.25" maxlength="499" autofocus required value="<?php echo $profit2; ?>" autocomplete="off" />
+							</div>
+						</div>
 					</div>
 					
 					<div class="row">

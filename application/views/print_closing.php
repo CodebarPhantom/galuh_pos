@@ -312,7 +312,7 @@
             $r_total_item_amt = 0;
             $r_total_item_qty = 0;
 			
-            $returnItemResult = $this->db->query("SELECT ri.id, ri.product_code, ri.product_name, ri.price, sum(ri.qty) as qty
+            $returnItemResult = $this->db->query("SELECT ri.id, ri.product_code, ri.product_name, ri.price, sum(ri.qty) as qty, o.discount_percentage
 			FROM return_items as ri inner join orders as o on ri.order_id = o.id
 			where o.created_datetime >= '$hari_ini 00:00:00' AND o.created_datetime <= '$hari_ini 23:59:59'
 			GROUP by ri.product_code  
@@ -322,7 +322,20 @@
                 $pcode = $returnItemData[$i]->product_code;
                 $name = $returnItemData[$i]->product_name;
                 $qty = $returnItemData[$i]->qty;
-                $price = $returnItemData[$i]->price;
+				$price = $returnItemData[$i]->price;
+				$discount = $returnItemData[$i]->discount_percentage;
+				
+				if ($discount == 0 || NULL) {
+					$dis_amt = 0;
+				} elseif (strpos($discount, '%') > 0) {
+					$temp_dis_Array= explode('%', $discount);                    
+					$temp_dis = $temp_dis_Array[0];                            
+					$temp_item_price = 0;  
+					$dis_amt=0;                        
+					$dis_amt = "-".($price * ($temp_dis / 100) * $qty);
+				}else{
+					$dis_amt = $discount;
+				}
 
                 $each_row_price = 0;
                 $each_row_price = $qty * $price;
@@ -380,48 +393,76 @@
 		<tbody> 
 		
 		<?php
-			$total_discount = 0;
-		
-            $discountResult = $this->db->query("SELECT sum(discount_total) as discount_total
+			$o_total_discount = 0;		
+            $o_discountResult = $this->db->query("SELECT sum(discount_total) as discount_total
 			FROM orders
-			where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' ");
-            $discountData = $discountResult->result();
-            for ($i = 0; $i < count($discountData); ++$i) {
-				$discount = $discountData[$i]->discount_total;
+			where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' AND status = '1' ");
+			$o_discountData = $o_discountResult->result();
+			for ($i = 0; $i < count($o_discountData); ++$i) {
+				$o_discount = $o_discountData[$i]->discount_total;
 				
-				$each_row_discount = 0;
-                $each_row_discount = $discount;
+				$o_each_row_discount = 0;
+                $o_each_row_discount = $o_discount;
 
-                $total_discount += $each_row_discount;
+                $o_total_discount += $o_each_row_discount;
                 ?>
 				<tr>
-					<td style="text-align:left; padding-top: 5px;"><?php echo "Total All Discount"; ?></td>
-					<td style="text-align:right;font-weight:bold;"><?php echo "-".number_format($each_row_discount); ?></td>
-	                
+					<td style="text-align:left; padding-top: 5px; border-right: 1px solid #000;"><?php echo "Total Orders with Discount"; ?></td>
+					<td style="text-align:right;font-weight:bold;  "><?php echo "-".number_format($o_each_row_discount); ?></td>	                
 				</tr>	
 		<?php       
-                unset($discount);
+                unset($o_discount);
                 
             }
-            unset($discountResult);
-            unset($discountItemData);
+            unset($o_discountResult);
+            unset($o_discountItemData);
         ?>
 			 
+
+			 <?php
+			$r_total_discount = 0;		
+            $r_discountResult = $this->db->query("SELECT sum(discount_total) as discount_total
+			FROM orders
+			where created_datetime >= '$hari_ini 00:00:00' AND created_datetime <= '$hari_ini 23:59:59' AND status = '2' ");
+				$r_discountData = $r_discountResult->result();
+				for ($i = 0; $i < count($r_discountData); ++$i) {
+				$r_discount = $r_discountData[$i]->discount_total;
+				
+				$r_each_row_discount = 0;
+                $r_each_row_discount = $r_discount;
+
+                $r_total_discount += $r_each_row_discount;
+                ?>
+				<tr>
+					<td style="text-align:left; padding-top: 5px; border-bottom: 1px solid #000; border-right: 1px solid #000;"><?php echo "Total Return with Discount"; ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;  "><?php echo number_format($r_each_row_discount); ?></td>	                
+				</tr>	
+		<?php       
+                unset($r_discount);
+                
+            }
+            unset($r_discountResult);
+            unset($r_discountItemData);
+        ?>	 
     	</tbody> 
+		<tbody> 
+			<tr>
+				<td style="text-align:left; padding-top: 5px; border-right: 1px solid #000;  "><?php echo "Total All Discount"; ?></td>
+				<td style="text-align:right;font-weight:bold; "><?php 
+				$total_all_discount = $o_each_row_discount -$r_each_row_discount;
+				echo "-".number_format($total_all_discount); ?></td>	                
+			</tr>	
+		</tbody> 
 		
 	</table> 
 	
         
-    
-
 	<div style="clear:both;"></div>
     
 	<table class="table" cellspacing="0"  border="0"> 
 			<tr>
 				<th width="100%" colspan="5" style="border-bottom: 2px solid #000;"> Summary This Day </th>
-			</tr>
-		
-		
+			</tr>		
 		<tbody> 		
 		
 				<tr>
@@ -434,7 +475,7 @@
 				</tr>
 				<tr>
 					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 1px solid #000;"><?php echo "Total Amount All Discount"; ?></td>
-					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;"><?php echo "-".number_format($total_discount); ?></td>
+					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;"><?php echo "-".number_format($total_all_discount); ?></td>
 	                
 				</tr>
 				<div style="border-top:1px solid #000; padding-top:10px;">
@@ -444,7 +485,7 @@
 					<td style="text-align:left; cols padding-right:1.5%; border-right: 1px solid #000; border-bottom: 1px solid #000;font-weight:bold;"><?php echo "Total Amount Sales"; ?></td>
 					<td style="text-align:right;font-weight:bold; border-bottom: 1px solid #000;"><?php
 					$total_amount = 0;
-					$total_amount = $o_total_item_amt + $r_total_item_amt - $total_discount;
+					$total_amount = $o_total_item_amt + $r_total_item_amt - $total_all_discount;
 					echo number_format($total_amount); ?></td>
 	                
 				</tr>

@@ -441,10 +441,15 @@
                         $dis_amt = number_format($discount_percentage);
                     } */
 
-                    if ($discount_total == 0 ){
-                        echo " ";
-                    }else{
-                        echo "(".number_format($discount_total).")";
+              
+                    if ($order_type == '1'){
+                        if ($discount_total == 0){
+                            echo " ";
+                        }else{
+                            echo "(".number_format($discount_total).")";
+                            }                        
+                    }else if ($order_type == '2'){
+                        echo number_format(1*$discount_total);
                     }
                     ?>
             	</td>
@@ -504,28 +509,32 @@
     if ($orderRows > 0) {
         ?>
         <div class="row" style="padding-top: 10px; padding-bottom: 10px; margin-top: 50px; font-size: 18px; letter-spacing: 0.5px;">
-			<div class="col-md-2" style="font-weight: bold;"><?php echo $lang_margin_80; ?> (<?php echo $site_currency; ?>)</div>
-			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt*0.8, 2); ?></div>
+            <div class="col-md-2" style="font-weight: bold;"><?php 
+            $percentage1 = $setting_profit1 * 100; 
+            echo $lang_margin." ".$percentage1."%"; ?> (<?php echo $site_currency; ?>)</div>
+			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt*$setting_profit1); ?></div>
 		</div>
 
         <div class="row" style="padding-top: 10px; padding-bottom: 10px; font-size: 18px; letter-spacing: 0.5px;">
-			<div class="col-md-2" style="font-weight: bold;"><?php echo $lang_margin_20; ?> (<?php echo $site_currency; ?>)</div>
-			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt*0.2, 2); ?></div>
+            <div class="col-md-2" style="font-weight: bold;"><?php
+            $percentage2 = $setting_profit2 * 100; 
+            echo $lang_margin." ".$percentage2."%"; ?> (<?php echo $site_currency; ?>)</div>
+			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt*$setting_profit2); ?></div>
 		</div>
 
 		<div class="row" style="padding-top: 10px; padding-bottom: 10px; font-size: 18px; letter-spacing: 0.5px;">
 			<div class="col-md-2" style="font-weight: bold;"><?php echo $lang_sub_total; ?> (<?php echo $site_currency; ?>)</div>
-			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt, 2); ?></div>
+			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_sub_amt); ?></div>
 		</div>
 		
 		<div class="row" style="padding-top: 10px; padding-bottom: 10px; font-size: 18px; letter-spacing: 0.5px;">
 			<div class="col-md-2" style="font-weight: bold;"><?php echo $lang_tax_total; ?> (<?php echo $site_currency; ?>)</div>
-			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_tax_amt, 2); ?></div>
+			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_tax_amt); ?></div>
 		</div>
 		
 		<div class="row" style="padding-top: 10px; padding-bottom: 10px; font-size: 18px; letter-spacing: 0.5px;">
 			<div class="col-md-2" style="font-weight: bold;"><?php echo $lang_grand_total; ?> (<?php echo $site_currency; ?>)</div>
-			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_grand_amt, 2); ?></div>
+			<div class="col-md-10" style="font-weight: bold;">: <?php echo number_format($total_grand_amt); ?></div>
 		</div>
 <?php
 

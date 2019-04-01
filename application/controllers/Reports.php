@@ -176,6 +176,7 @@ class Reports extends CI_Controller
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_margin_80'] = $this->lang->line('margin_80');
         $data['lang_margin_20'] = $this->lang->line('margin_20');
+        $data['lang_margin'] = $this->lang->line('margin');
 
 
         $data['lang_gross_sales'] = $this->lang->line('gross_sales');
@@ -333,6 +334,11 @@ class Reports extends CI_Controller
         $siteSettingData = $this->Constant_model->getDataOneColumn('site_setting', 'id', '1');
         $site_dateformat = $siteSettingData[0]->datetime_format;
         $site_currency = $siteSettingData[0]->currency;
+        $setting_profit1 = $siteSettingData[0]->profit1;
+    	$setting_profit2 = $siteSettingData[0]->profit2;
+
+        $percentage1 = $setting_profit1 * 100; 
+        $percentage2 = $setting_profit2 * 100; 
 
         $this->load->library('excel');
 
@@ -470,6 +476,10 @@ class Reports extends CI_Controller
         $lang_margin_20 = $this->lang->line('margin_20');
         $lang_gross_sales = $this->lang->line('gross_sales');
         $lang_net_sales = $this->lang->line('net_sales');
+        $lang_margin = $this->lang->line('margin');
+
+        $margin1 = $lang_margin." ".$percentage1."%";
+        $margin2 = $lang_margin." ".$percentage2."%";
 
         $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:K1');
         $objPHPExcel->getActiveSheet()->setCellValue('A1', "$lang_sales_report");
@@ -666,8 +676,8 @@ class Reports extends CI_Controller
         $kk=$jj+1;
          $margin20 = $total_sub_amt*0.2;
          $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$kk:H$kk");       
-         $objPHPExcel->getActiveSheet()->setCellValue("A$kk", "$lang_margin_20");       
-         $objPHPExcel->getActiveSheet()->setCellValue("I$kk", "=SUM(I3:I".($kk-2).")*0.2");
+         $objPHPExcel->getActiveSheet()->setCellValue("A$kk", "$margin1");       
+         $objPHPExcel->getActiveSheet()->setCellValue("I$kk", "=SUM(I3:I".($kk-2).")*".($setting_profit1));
          $objPHPExcel->getActiveSheet()->getStyle("A$kk")->applyFromArray($text_align_style);
          $objPHPExcel->getActiveSheet()->getStyle("B$kk")->applyFromArray($style_header);
          $objPHPExcel->getActiveSheet()->getStyle("C$kk")->applyFromArray($style_header);
@@ -682,8 +692,8 @@ class Reports extends CI_Controller
          $ll=$jj+2;
          $margin80 = $total_sub_amt*0.8;
          $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$ll:H$ll");       
-         $objPHPExcel->getActiveSheet()->setCellValue("A$ll", "$lang_margin_80");       
-         $objPHPExcel->getActiveSheet()->setCellValue("I$ll", "=SUM(I3:I".($ll-3).")*0.8");
+         $objPHPExcel->getActiveSheet()->setCellValue("A$ll", "$margin2");       
+         $objPHPExcel->getActiveSheet()->setCellValue("I$ll", "=SUM(I3:I".($ll-3).")*".($setting_profit2));
          $objPHPExcel->getActiveSheet()->getStyle("A$ll")->applyFromArray($text_align_style);
          $objPHPExcel->getActiveSheet()->getStyle("B$ll")->applyFromArray($style_header);
          $objPHPExcel->getActiveSheet()->getStyle("C$ll")->applyFromArray($style_header);
@@ -721,10 +731,13 @@ class Reports extends CI_Controller
          $siteSettingData = $this->Constant_model->getDataOneColumn('site_setting', 'id', '1');
          $site_dateformat = $siteSettingData[0]->datetime_format;
          $site_currency = $siteSettingData[0]->currency;
+         $setting_profit1 = $siteSettingData[0]->profit1;
+    	 $setting_profit2 = $siteSettingData[0]->profit2;
+
+         $percentage1 = $setting_profit1 * 100; 
+         $percentage2 = $setting_profit2 * 100; 
  
-         //Ubah Disini
-         /*$custDtaData = $this->Constant_model->getDataOneColumn('customers', 'id', "$cust_id");
-         $cust_fn = $custDtaData[0]->fullname;*/
+        
  
          $this->load->library('excel');
  
@@ -863,6 +876,11 @@ class Reports extends CI_Controller
          $lang_margin_20 = $this->lang->line('margin_20');
          $lang_gross_sales = $this->lang->line('gross_sales');
          $lang_net_sales = $this->lang->line('net_sales');
+
+         $lang_margin = $this->lang->line('margin');
+
+         $margin1 = $lang_margin." ".$percentage1."%";
+         $margin2 = $lang_margin." ".$percentage2."%";
  
          $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:M1');
          $objPHPExcel->getActiveSheet()->setCellValue('A1', "Report Details POS Galuh Mas");
@@ -1349,9 +1367,9 @@ class Reports extends CI_Controller
          $kk=$jj+1;
         // $margin20 = $total_sub_amt *0.2;
          $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$kk:J$kk");       
-         $objPHPExcel->getActiveSheet()->setCellValue("A$kk", "$lang_margin_20");
-         $objPHPExcel->getActiveSheet()->SetCellValue('K'.$kk, "=SUM(K3:K".($kk-2).")*0.2");        
-         //$objPHPExcel->getActiveSheet()->setCellValue("G$kk", number_format($margin20));
+         $objPHPExcel->getActiveSheet()->setCellValue("A$kk", "$margin1");  
+                 
+         $objPHPExcel->getActiveSheet()->setCellValue('K'.$kk, "=SUM(K3:K".($kk-2).")*".($setting_profit1));
          $objPHPExcel->getActiveSheet()->getStyle("A$kk")->applyFromArray($text_align_style);
          $objPHPExcel->getActiveSheet()->getStyle("B$kk")->applyFromArray($style_header);
          $objPHPExcel->getActiveSheet()->getStyle("C$kk")->applyFromArray($style_header);
@@ -1368,9 +1386,8 @@ class Reports extends CI_Controller
          //$margin80 = $total_sub_amt *0.8;
 
          $objPHPExcel->setActiveSheetIndex(0)->mergeCells("A$ll:J$ll");       
-         $objPHPExcel->getActiveSheet()->setCellValue("A$ll", "$lang_margin_80"); 
-         $objPHPExcel->getActiveSheet()->SetCellValue('K'.$ll, "=SUM(K3:K".($ll-3).")*0.8");         
-         //$objPHPExcel->getActiveSheet()->setCellValue("G$ll", number_format($margin80));
+         $objPHPExcel->getActiveSheet()->setCellValue("A$ll", "$margin2");          
+         $objPHPExcel->getActiveSheet()->setCellValue('K'.$ll, "=SUM(K3:K".($ll-3).")*".($setting_profit2));
          $objPHPExcel->getActiveSheet()->getStyle("A$ll")->applyFromArray($text_align_style);
          $objPHPExcel->getActiveSheet()->getStyle("B$ll")->applyFromArray($style_header);
          $objPHPExcel->getActiveSheet()->getStyle("C$ll")->applyFromArray($style_header);
