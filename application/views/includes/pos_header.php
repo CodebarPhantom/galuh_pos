@@ -25,6 +25,13 @@
     $setting_keyboard = $settingData->display_keyboard;
 	$setting_customer_id = $settingData->default_customer_id;
 	$setting_image = $settingData->site_logo;
+
+	$login_name = '';
+    $this->db->where('id', $user_id);
+    $query = $this->db->get('users');
+    $result = $query->result();
+
+	$login_name = $result[0]->fullname;
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +75,7 @@
 				</a>
 				<ul class="user-menu">
 					<li class="dropdown pull-right">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> <?php echo $login_name; ?> <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="<?=base_url()?>auth/logout"><i class="icono-power" style="color: #30a5ff;"></i> <?php echo $lang_logout; ?></a></li>
 						</ul>
@@ -88,7 +95,7 @@
 					<!--<li class="dropdown pull-right" style="margin-right: 10px;">
 						<a href="#openedBill" data-toggle="modal" style="text-decoration: none;">
 							<div style="background-color: #c72a25; color: #FFF; padding: 7px 6px; border-radius: 3px; margin-top: -5px;">
-								&nbsp;<?php echo $lang_opened_hold; ?>
+								&nbsp;<?php //echo $lang_opened_hold; ?>
 							</div>
 						</a>
 					</li> -->
@@ -110,7 +117,7 @@
 					<!--<li class="dropdown pull-right" style="margin-right: 10px;">
 						<a href="#openedBill" data-toggle="modal" style="text-decoration: none;">
 							<div style="background-color: #c72a25; color: #FFF; padding: 7px 6px; border-radius: 3px; margin-top: -5px;">
-								&nbsp;<?php echo $lang_opened_hold; ?>
+								&nbsp;<?php // echo $lang_opened_hold; ?>
 							</div>
 						</a>
 					</li>-->

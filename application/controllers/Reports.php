@@ -181,6 +181,7 @@ class Reports extends CI_Controller
 
         $data['lang_gross_sales'] = $this->lang->line('gross_sales');
         $data['lang_net_sales'] = $this->lang->line('net_sales');
+        $data['lang_user_by'] = $this->lang->line('user_by');
 
         $this->load->view('sales_report', $data);
     }
@@ -330,6 +331,7 @@ class Reports extends CI_Controller
         $url_end = $this->input->get('end_date');
         $url_outlet = $this->input->get('outlet');
         $url_paid_by = $this->input->get('paid');
+        $url_users = $this->input->get('users');
 
         $siteSettingData = $this->Constant_model->getDataOneColumn('site_setting', 'id', '1');
         $site_dateformat = $siteSettingData[0]->datetime_format;
@@ -477,11 +479,12 @@ class Reports extends CI_Controller
         $lang_gross_sales = $this->lang->line('gross_sales');
         $lang_net_sales = $this->lang->line('net_sales');
         $lang_margin = $this->lang->line('margin');
+        $lang_user_by = $this->lang->line('user_by');
 
         $margin1 = $lang_margin." ".$percentage1."%";
         $margin2 = $lang_margin." ".$percentage2."%";
 
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:K1');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:L1');
         $objPHPExcel->getActiveSheet()->setCellValue('A1', "$lang_sales_report");
 
         $objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($top_header_style);
@@ -495,6 +498,7 @@ class Reports extends CI_Controller
         $objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($top_header_style);
         $objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($top_header_style);
         $objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($top_header_style);
+        $objPHPExcel->getActiveSheet()->getStyle('L1')->applyFromArray($top_header_style);
    
 
         $objPHPExcel->getActiveSheet()->setCellValue('A2', "$lang_date");
@@ -508,6 +512,7 @@ class Reports extends CI_Controller
         $objPHPExcel->getActiveSheet()->setCellValue('I2', "$lang_net_sales ($site_currency)");
         $objPHPExcel->getActiveSheet()->setCellValue('J2', "$lang_tax ($site_currency)");
         $objPHPExcel->getActiveSheet()->setCellValue('K2', "$lang_grand_total ($site_currency)");
+        $objPHPExcel->getActiveSheet()->setCellValue('L2', "$lang_user_by");
 
         $objPHPExcel->getActiveSheet()->getStyle('A2')->applyFromArray($style_header);
         $objPHPExcel->getActiveSheet()->getStyle('B2')->applyFromArray($style_header);
@@ -520,11 +525,12 @@ class Reports extends CI_Controller
         $objPHPExcel->getActiveSheet()->getStyle('I2')->applyFromArray($style_header);
         $objPHPExcel->getActiveSheet()->getStyle('J2')->applyFromArray($style_header);
         $objPHPExcel->getActiveSheet()->getStyle('K2')->applyFromArray($style_header);
+        $objPHPExcel->getActiveSheet()->getStyle('L2')->applyFromArray($style_header);
 
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(25);
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(25);
         $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
@@ -532,6 +538,7 @@ class Reports extends CI_Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
         $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
 
         $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(30);
 
@@ -545,26 +552,33 @@ class Reports extends CI_Controller
 
         $paid_sort = '';
         if ($url_paid_by == '-') {
-            $paid_sort = ' AND payment_method > 0 ';
+            $paid_sort = ' AND o.payment_method > 0 ';
         } else {
-            $paid_sort = " AND payment_method = '$url_paid_by' ";
+            $paid_sort = " AND o.payment_method = '$url_paid_by' ";
         }
 
         $outlet_sort = '';
         if ($url_outlet == '-') {
-            $outlet_sort = ' AND outlet_id > 0 ';
+            $outlet_sort = ' AND o.outlet_id > 0 ';
         } else {
-            $outlet_sort = " AND outlet_id = '$url_outlet' ";
+            $outlet_sort = " AND o.outlet_id = '$url_outlet' ";
         }
 
-        $orderResult = $this->db->query("SELECT o.id,
-        o.ordered_datetime,o.customer_name,o.customer_mobile,o.outlet_id,o.subtotal,o.discount_total,o.tax,o.grandtotal,
+        $users_sort = '';
+        if ($url_users == '-') {
+            $users_sort = ' AND o.created_user_id > 0 ';
+        } else {
+            $users_sort = " AND o.created_user_id = '$url_users' ";
+        }
+
+        $orderResult = $this->db->query("SELECT o.id, o.ordered_datetime,o.customer_name,o.customer_mobile,o.outlet_id,o.subtotal,o.discount_total,o.tax,o.grandtotal,
         o.payment_method,o.payment_method_name,o.paid_amt,o.return_change,o.cheque_number, o.discount_total,
         o.discount_percentage,o.outlet_name,o.outlet_address,o.outlet_contact,
-        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name,p.discount_percentage
+        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name,p.discount_percentage, s.fullname
         FROM orders as o 
-        INNER JOIN promotion as p ON o.promo_id = p.id
-        WHERE o.ordered_datetime >= '$start_date' AND o.ordered_datetime <= '$end_date' $paid_sort $outlet_sort 
+        LEFT JOIN promotion as p ON o.promo_id = p.id
+        LEFT JOIN users as s on o.created_user_id = s.id
+        WHERE o.ordered_datetime >= '$start_date' AND o.ordered_datetime <= '$end_date' $paid_sort $outlet_sort $users_sort
         ORDER BY o.ordered_datetime DESC");
         $orderRows = $orderResult->num_rows();
         if ($orderRows > 0) {
@@ -585,7 +599,9 @@ class Reports extends CI_Controller
                 $payment_method_name = $orderData[$od]->payment_method_name;
                 $order_type = $orderData[$od]->status;
                 $gross_sales = $subTotal + $discount_total;
+                $fullname = $orderData[$od]->fullname;
                 $type_name = '';
+
 
 
                 if ($order_type == '1') {
@@ -616,6 +632,7 @@ class Reports extends CI_Controller
                 $objPHPExcel->getActiveSheet()->setCellValue("I$jj", "$subTotal");
                 $objPHPExcel->getActiveSheet()->setCellValue("J$jj", "$tax");
                 $objPHPExcel->getActiveSheet()->setCellValue("K$jj", "$grandTotal");
+                $objPHPExcel->getActiveSheet()->setCellValue("L$jj", "$fullname");
 
                 $objPHPExcel->getActiveSheet()->getStyle("A$jj")->applyFromArray($account_value_style_header);
                 $objPHPExcel->getActiveSheet()->getStyle("B$jj")->applyFromArray($account_value_style_header);
@@ -628,6 +645,7 @@ class Reports extends CI_Controller
                 $objPHPExcel->getActiveSheet()->getStyle("I$jj")->applyFromArray($account_value_style_header);
                 $objPHPExcel->getActiveSheet()->getStyle("J$jj")->applyFromArray($account_value_style_header);
                 $objPHPExcel->getActiveSheet()->getStyle("K$jj")->applyFromArray($account_value_style_header);
+                $objPHPExcel->getActiveSheet()->getStyle("L$jj")->applyFromArray($account_value_style_header);
 
                 $total_sub_amt += $subTotal;
                 $total_tax_amt += $tax;
@@ -1018,14 +1036,14 @@ class Reports extends CI_Controller
                     LEFT JOIN orders as o on o.id = oi.order_id 
                     LEFT JOIN category as c ON oi.product_category = c.id
                     LEFT JOIN promotion as p on p.id = o.promo_id
-                    WHERE order_id = '$order_id'  ORDER BY oi.id ");                    
+                    WHERE oi.order_id = '$order_id'  ORDER BY oi.id ");                    
                 }else{
                     $oItemResult = $this->db->query("SELECT oi.id, oi.order_id, oi.product_code, oi.product_name,oi.cost, oi.price, oi.qty, o.discount_percentage,c.name as tenant,c.id, p.promotion_name
                     FROM order_items as oi 
                     LEFT JOIN orders as o on o.id = oi.order_id 
                     LEFT JOIN category as c ON oi.product_category = c.id
                     LEFT JOIN promotion as p on p.id = o.promo_id
-                    WHERE order_id = '$order_id' AND c.id = '$category_tenant'  ORDER BY oi.id"
+                    WHERE oi.order_id = '$order_id' AND c.id = '$category_tenant'  ORDER BY oi.id"
                     );
                 }
                  $oItemRows = $oItemResult->num_rows();
@@ -1094,7 +1112,7 @@ class Reports extends CI_Controller
                                   LEFT JOIN orders as o on o.id = r.order_id 
                                   LEFT JOIN category as c ON r.product_category = c.id
                                   LEFT JOIN promotion as p on p.id = o.promo_id
-                                  WHERE order_id = '$order_id'  ORDER BY r.id ");
+                                  WHERE oi.order_id = '$order_id'  ORDER BY r.id ");
                  }
                    else{
                     $rItemResult = $this->db->query("SELECT r.id, r.order_id, r.product_code, r.product_name,r.cost, r.price, r.qty, o.discount_percentage,c.name as tenant,c.id, p.promotion_name
@@ -1102,7 +1120,7 @@ class Reports extends CI_Controller
                                 LEFT JOIN orders as o on o.id = r.order_id 
                                 LEFT JOIN category as c ON r.product_category = c.id
                                 LEFT JOIN promotion as p on p.id = o.promo_id
-                                WHERE order_id = '$order_id' AND c.id = '$category_tenant' ORDER BY r.id ");
+                                WHERE oi.order_id = '$order_id' AND c.id = '$category_tenant' ORDER BY r.id ");
                  }
                  
                  $rItemRows = $rItemResult->num_rows();

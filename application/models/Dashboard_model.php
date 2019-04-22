@@ -28,5 +28,19 @@ class Dashboard_model extends CI_Model
                 GROUP by o.product_name 
                 order by total desc
                 LIMIT 10")->result();	
-	}
+    }
+    
+    public function todays_sales(){
+        $today_date = date('Y-m-d');        
+        return $query = $this->db->query("SELECT ifnull(sum(grandtotal),0) as todays_sales 
+            FROM orders
+            WHERE created_datetime >= '$today_date 00:00:00' AND created_datetime <= '$today_date 23:59:59'")->result();
+    }
+
+    public function todays_transaction(){
+        $today_date = date('Y-m-d');        
+        return $query = $this->db->query("SELECT count(id) as total_transaction
+            FROM orders
+            WHERE created_datetime >= '$today_date 00:00:00' AND created_datetime <= '$today_date 23:59:59'")->result();
+    }
 }

@@ -23,12 +23,14 @@
 <?php
     $url_outlet = '';
     $url_paid_by = '';
+    $url_users = '';
     $url_start = '';
     $url_end = '';
 
     if (isset($_GET['report'])) {
         $url_outlet = $_GET['outlet'];
         $url_paid_by = $_GET['paid'];
+        $url_users = $_GET['users'];
         $url_start = $_GET['start_date'];
         $url_end = $_GET['end_date'];
     }
@@ -61,7 +63,7 @@
 				<div class="panel-body">					
 					<form action="<?=base_url()?>reports/sales_report" method="get">
 					<div class="row">
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<label><?php echo $lang_outlets; ?></label>
 								<select name="outlet" class="form-control" required>
@@ -98,7 +100,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<label><?php echo $lang_paid_by; ?></label>
 								<select name="paid" class="form-control" required>
@@ -115,6 +117,31 @@
                                             echo 'selected="selected"';
                                         } ?>>
 											<?php echo $pay_name; ?>
+										</option>
+								<?php
+
+                                    }
+                                ?>
+								</select>
+							</div>
+						</div>
+                        <div class="col-md-2">
+							<div class="form-group">
+								<label><?php echo $lang_user_by; ?></label>
+								<select name="users" class="form-control" required>
+									<option value=""><?php echo $lang_user_by; ?></option>
+									<option value="-" <?php if ($url_users == '-') {
+                                    echo 'selected="selected"';
+                                } ?>><?php echo $lang_all; ?></option>
+								<?php
+                                    $usersData = $this->Constant_model->getDataAll('users', 'fullname', 'ASC');
+                                    for ($p = 0; $p < count($usersData); ++$p) {
+                                        $users_id = $usersData[$p]->id;
+                                        $users_fullname = $usersData[$p]->fullname; ?>
+										<option value="<?php echo $users_id; ?>" <?php if ($url_users == "$users_id") {
+                                            echo 'selected="selected"';
+                                        } ?>>
+											<?php echo $users_fullname; ?>
 										</option>
 								<?php
 
@@ -295,7 +322,7 @@
         } ?>
 					<div class="row" style="margin-top: 10px;">
 						<div class="col-md-12" style="text-align: right;">
-							<a href="<?=base_url()?>reports/exportSalesReport?report=<?php echo $_GET['report']; ?>&start_date=<?php echo $url_start; ?>&end_date=<?php echo $url_end; ?>&outlet=<?php echo $url_outlet; ?>&paid=<?php echo $url_paid_by; ?>" style="text-decoration: none">
+							<a href="<?=base_url()?>reports/exportSalesReport?report=<?php echo $_GET['report']; ?>&start_date=<?php echo $url_start; ?>&end_date=<?php echo $url_end; ?>&outlet=<?php echo $url_outlet; ?>&paid=<?php echo $url_paid_by; ?>&users=<?php echo $url_users; ?>" style="text-decoration: none">
 								<button type="button" class="btn btn-success" style="background-color: #5cb85c; border-color: #4cae4c;">
 									<?php echo $lang_export_to_excel; ?>
 								</button>
@@ -365,14 +392,21 @@
         } else {
             $outlet_sort = " AND o.outlet_id = '$url_outlet' ";
         }
+
+        $users_sort = '';
+        if ($url_users == '-') {
+            $users_sort = ' AND o.created_user_id > 0 ';
+        } else {
+            $users_sort = " AND o.created_user_id = '$url_users' ";
+        }
         $orderResult = $this->db->query("SELECT o.id,
         o.ordered_datetime,o.customer_name,o.customer_mobile,o.outlet_id,o.subtotal,o.discount_total,o.tax,o.grandtotal,
         o.payment_method,o.payment_method_name,o.paid_amt,o.return_change,o.cheque_number, o.discount_total,
         o.discount_percentage,o.outlet_name,o.outlet_address,o.outlet_contact,
-        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name,p.discount_percentage
+        o.gift_card,o.card_number,o.outlet_receipt_footer,o.status,p.promotion_name,p.discount_percentage, o.created_user_id
         FROM orders as o 
         INNER JOIN promotion as p ON o.promo_id = p.id
-        WHERE o.ordered_datetime >= '$start_date' AND o.ordered_datetime <= '$end_date' $paid_sort $outlet_sort 
+        WHERE o.ordered_datetime >= '$start_date' AND o.ordered_datetime <= '$end_date' $paid_sort $outlet_sort $users_sort
         ORDER BY o.ordered_datetime DESC ");
         $orderRows = $orderResult->num_rows();
 

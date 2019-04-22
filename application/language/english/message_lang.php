@@ -329,4 +329,7 @@
 
     $lang ['profit_sharing'] = 'Profit Sharing';
 
+    $lang ['today_transaction'] = "Today's Transaction";
+    $lang ['user_by'] = "User By";
+
 

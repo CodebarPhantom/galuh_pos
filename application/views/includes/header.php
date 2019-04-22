@@ -56,6 +56,7 @@
 		<link href="<?=base_url()?>assets/css/styles.css" rel="stylesheet">
 		
 		<link href="<?=base_url()?>assets/css/icono.min.css" rel="stylesheet">
+
 		
 		<!--[if lt IE 9]>
 		<script src="<?=base_url()?>assets/js/html5shiv.js"></script>
@@ -91,43 +92,19 @@
 					<?php echo $setting_site_name; ?>
 				</a>
 				<ul class="user-menu">
-					<li class="dropdown pull-right">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> <?php echo $login_name; ?> <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="<?=base_url()?>auth/logout"><i class="icono-power" style="color: #30a5ff;"></i> <?php echo $lang_logout; ?></a></li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="user-menu">
-				<!-- Eryan Fauzan -->
-					<li class="dropdown pull-right">
-						<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<?php /*
-                                $temp_site_lang = $this->session->userdata('site_lang');
-                                if ($temp_site_lang == 'english') {
-                                    echo '<img src="'.base_url().'assets/img/english_flag.png" />';
-                                } elseif ($temp_site_lang == 'spanish') {
-                                    echo '<img src="'.base_url().'assets/img/spanish_flag.png" />';
-                                } else {
-                                    echo '<img src="'.base_url().'assets/img/english_flag.png" />';
-                                }*/
-                            ?>
+				<li class="dropdown pull-right" style="margin-right: 10px;">
+						<a href="<?=base_url()?>auth/logout" style="text-decoration: none;">
+							<div style="background-color: #b33939; color: #FFF; padding: 7px 6px; border-radius: 3px; margin-top: -5px;">
+								&nbsp;<?php echo $lang_logout; ?>
+							</div>
 						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li>
-								<a href="<? //=base_url()?>LangSwitch/switchLanguage/english" style="text-decoration: none; color: #00598c;">
-									<img src="<?//=base_url()?>assets/img/english_flag.png" /> &nbsp;&nbsp;English
-								</a>
-							</li>
-							<li>
-								<a href="<?//=base_url()?>LangSwitch/switchLanguage/spanish" style="text-decoration: none; color: #00598c;">
-									<img src="<?//=base_url()?>assets/img/spanish_flag.png" /> &nbsp;&nbsp;Spanish
-								</a>
-							</li>
-						</ul>-->
 					</li>
-					<!-- Eryan Fauzan -->
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo $login_name; ?> &nbsp; &nbsp;</a>						
+					</li>
+					
 				</ul>
+				
 			</div>
 		</div><!-- /.container-fluid -->
 		

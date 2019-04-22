@@ -9,7 +9,7 @@
 	</div><!--/.row-->
 	
 	<div class="row">
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-6 col-md-3">
 			<div class="panel panel-default">
 				<a href="<?=base_url()?>pos" style="text-decoration: none">
 					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
@@ -19,7 +19,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-6 col-md-3">
 			<div class="panel panel-default">
 				<a href="<?=base_url()?>sales/list_sales" style="text-decoration: none">
 					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
@@ -32,7 +32,7 @@
 		<?php
             if ($user_role < 3) {
                 ?>
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-6 col-md-3">
 			<div class="panel panel-default">
 				<a href="<?=base_url()?>reports/sales_report" style="text-decoration: none">
 					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
@@ -46,30 +46,12 @@
 
             }
         ?>
-		<div class="col-xs-6 col-md-2">
-			<div class="panel panel-default">
-				<a href="<?=base_url()?>setting/outlets" style="text-decoration: none">
-					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
-						<h4><?php echo $lang_outlets; ?></h4>
-						<i class="icono-market" style="color: #30a5ff;"></i>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div class="col-xs-6 col-md-2">
-			<div class="panel panel-default">
-				<a href="<?=base_url()?>setting/users" style="text-decoration: none;">
-					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
-						<h4><?php echo $lang_users; ?></h4>
-						<i class="icono-user" style="color: #30a5ff;"></i>
-					</div>
-				</a>
-			</div>
-		</div>
+	
+		
 		<?php
             if ($user_role == '1') {
                 ?>
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-6 col-md-3">
 			<div class="panel panel-default">
 				<a href="<?=base_url()?>setting/system_setting" style="text-decoration: none;">
 					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
@@ -84,6 +66,36 @@
             }
         ?>
 	</div><!--/.row-->
+
+	<div class="row">
+		<div class="col-xs-6 col-md-3">
+			<div class="panel panel-default">
+				<a href="#" style="text-decoration: none">
+					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
+						<h4><?php echo $lang_today_sales; ?> (<?php echo $currency; ?>)</h4>					
+						<?php foreach($today_sales as $sale) { ?> 
+							<h4><?php echo number_format($sale->todays_sales);?> </h4>
+						<?php } ?>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-xs-6 col-md-3">
+			<div class="panel panel-default">
+				<a href="#" style="text-decoration: none">
+					<div class="panel-body easypiechart-panel" style="padding-bottom: 30px;">
+						<h4><?php echo $lang_today_transaction; ?></h4>
+						<?php foreach($today_transaction as $tran) { ?>
+							<h4><?php echo number_format($tran->total_transaction);?></h4>
+						<?php } ?>
+					</div>
+				</a>
+			</div>
+		</div>
+		
+	</div><!--/.row-->
+
+
 	
 	<?php
         for ($i = 0; $i < 12; ++$i) {

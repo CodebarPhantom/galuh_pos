@@ -18,7 +18,7 @@ class Auth_model extends CI_Model
         $query = $this->db->get_where('users', array('email' => $email));
         $user_data = $query->row();
 
-        if (count($user_data) > 0) {
+        if (count((array)$user_data) > 0) {
             $result = array();
             if ($password == $user_data->password) {
                 if ($user_data->status == 0) {
