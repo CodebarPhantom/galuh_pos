@@ -165,21 +165,12 @@
 			    </center>
 		    </td>
 	    </tr>
-	    <!--<tr>
-		    <td width="100%" align="center">
-			    <h2 style="padding-top: 0px; font-size: 20px;"><strong><?php //echo $outlet_name; ?></strong></h2>
-		    </td>
-	    </tr>
 		<tr>
 			<td width="100%">
-				<span class="left" style="text-align: left;"><?php //echo $lang_address; ?> : <?php // echo $outlet_address; ?></span>	
 				
-				<span class="left" style="text-align: left;"><?php //echo $lang_sale_id; ?> : <?php // echo $order_id; ?></span>
-				<span class="left" style="text-align: left;"><?php //echo $lang_date; ?> : <?php //echo $ordered_dtm; ?></span>
-				<span class="left" style="text-align: left;"><?php //echo "Cashier Name"; ?> : <?php //echo $cashier; ?></span>
-				
+				<span class="left" style="text-align: left;"><?php echo $lang_date; ?> : <?php echo date('d-m-Y'); ?></span>
 			</td>
-		</tr> -->  
+		</tr> 
     </table>
     
 	

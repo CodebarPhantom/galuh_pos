@@ -175,9 +175,12 @@ class Returnorder extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
         $data['lang_gross_sales'] = $this->lang->line('gross_sales');
         $data['lang_sale_id'] = $this->lang->line('sale_id');
         $data['item_return'] = $this->Returnorder_model->item_return($sales_id);
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('create_return', $data);
     }
@@ -294,9 +297,11 @@ class Returnorder extends CI_Controller
         $data['lang_return_order_confirmation'] = $this->lang->line('return_order_confirmation');
         $data['lang_print_return_order_receipt'] = $this->lang->line('print_return_order_receipt');
         $data['lang_not_good'] = $this->lang->line('not_good');
-
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('return_confirmation', $data);
     }
@@ -381,7 +386,10 @@ class Returnorder extends CI_Controller
         $data['lang_per_item'] = $this->lang->line('per_item');
 
         $data['lang_promotion'] = $this->lang->line('promotion');  
-        $data['lang_report_details'] = $this->lang->line('report_details');      
+        $data['lang_report_details'] = $this->lang->line('report_details');  
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('print_return', $data);
     }
@@ -538,7 +546,9 @@ class Returnorder extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
-
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
         $this->load->view('return_report', $data);
     }
 
@@ -1055,10 +1065,10 @@ class Returnorder extends CI_Controller
         $objPHPExcel->getActiveSheet()->getRowDimension("$jj")->setRowHeight(30);
 
         // Redirect output to a client’s web browser (Excel5)
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Return_order_Report.xls"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Return_order_Report.xlsx"');
         header('Cache-Control: max-age=0');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
     }
 

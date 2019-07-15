@@ -124,13 +124,13 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label><?php echo $lang_actived_promotion; ?></label>
-								<input type="text" name="start_date" class="form-control" id="startDate" autocomplete="off" required value="<?php echo date($site_dateformat, strtotime($start_date)); ?>""/>
+								<input type="text" name="start_date" class="form-control" id="startDate" autocomplete="off" required value="<?php echo date($site_dateformat, strtotime($start_date)); ?>"/>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
 								<label><?php echo $lang_deactived_promotion; ?></label>
-								<input type="text" name="end_date" class="form-control" id="endDate" autocomplete="off" required value="<?php echo date($site_dateformat, strtotime($end_date)); ?>""/>
+								<input type="text" name="end_date" class="form-control" id="endDate" autocomplete="off" required value="<?php echo date($site_dateformat, strtotime($end_date)); ?>"/>
 							</div>
 						</div>
 					</div>

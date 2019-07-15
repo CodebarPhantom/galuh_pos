@@ -85,11 +85,17 @@ class Dashboard extends CI_Controller
         $data['lang_monthly_sales_outlet'] = $this->lang->line('monthly_sales_outlet');
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_today_transaction'] = $this->lang->line('today_transaction');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $data['pie_chart'] = $this->Dashboard_model->pie_chart();
         $data['pie_chart1'] = $this->Dashboard_model->pie_chart1();
         $data['today_sales'] = $this->Dashboard_model->todays_sales();
         $data['today_transaction'] = $this->Dashboard_model->todays_transaction();
+        
 
         $this->load->view('dashboard', $data);
     }

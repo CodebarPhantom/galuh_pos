@@ -117,6 +117,9 @@ class Setting extends CI_Controller
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
         $data['lang_profit_sharing'] = $this->lang->line('profit_sharing');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('system_setting', $data);
     }
@@ -221,6 +224,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('outlets', $data);
     }
@@ -285,6 +291,9 @@ class Setting extends CI_Controller
 
             $data['lang_promotion'] = $this->lang->line('promotion');
             $data['lang_report_details'] = $this->lang->line('report_details');
+            $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+            $data['lang_service_center'] = $this->lang->line('service_center');
+            $data['lang_list_service'] = $this->lang->line('list_service');
 
             $this->load->view('add_outlet', $data);
         }
@@ -356,6 +365,9 @@ class Setting extends CI_Controller
 
             $data['lang_promotion'] = $this->lang->line('promotion');
             $data['lang_report_details'] = $this->lang->line('report_details');
+            $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+            $data['lang_service_center'] = $this->lang->line('service_center');
+            $data['lang_list_service'] = $this->lang->line('list_service');
 
             $this->load->view('edit_outlet', $data);
         }
@@ -463,6 +475,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('users', $data);
     }
@@ -528,6 +543,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_user', $data);
     }
@@ -600,6 +618,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('edit_user', $data);
     }
@@ -661,6 +682,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('change_password', $data);
     }
@@ -768,6 +792,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('payment_methods', $data);
     }
@@ -828,6 +855,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_payment_method', $data);
     }
@@ -893,6 +923,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('edit_payment_method', $data);
     }
@@ -1005,6 +1038,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('suppliers', $data);
     }
@@ -1072,6 +1108,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_supplier', $data);
     }
@@ -1144,6 +1183,9 @@ class Setting extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('edit_supplier', $data);
     }

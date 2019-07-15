@@ -135,6 +135,9 @@ class Gift_card extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('gift_card', $data);
     }
@@ -252,6 +255,9 @@ class Gift_card extends CI_Controller
 
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_gift_card', $data);
     }

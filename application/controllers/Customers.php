@@ -155,6 +155,9 @@ class Customers extends CI_Controller
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('customers', $data);
     }
@@ -220,6 +223,9 @@ class Customers extends CI_Controller
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
         $this->load->view('edit_customer', $data);
     }
 
@@ -306,6 +312,7 @@ class Customers extends CI_Controller
         $data['lang_date_time'] = $this->lang->line('date_time');
 
         $data['lang_view_history_customer'] = $this->lang->line('view_history_customer');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
 
         $this->load->view('customer_history', $data);
     }
@@ -369,6 +376,9 @@ class Customers extends CI_Controller
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('search_customers', $data);
     }
@@ -427,6 +437,9 @@ class Customers extends CI_Controller
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_customer', $data);
     }
@@ -713,10 +726,10 @@ class Customers extends CI_Controller
         unset($custDtaData);
 
         // Redirect output to a client’s web browser (Excel5)
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Customer_Report.xls"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Customer_Report.xlsx"');
         header('Cache-Control: max-age=0');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
     }
 
@@ -1082,10 +1095,10 @@ class Customers extends CI_Controller
         $objPHPExcel->getActiveSheet()->getRowDimension("$jj")->setRowHeight(30);
 
         // Redirect output to a client’s web browser (Excel5)
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Sales_History_for_'.$cust_fn.'.xls"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Sales_History_for_'.$cust_fn.'.xlsx"');
         header('Cache-Control: max-age=0');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
     }
 
@@ -1317,10 +1330,10 @@ class Customers extends CI_Controller
         unset($custData);
 
         // Redirect output to a client’s web browser (Excel5)
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Customer_Report_Search_Result.xls"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Customer_Report_Search_Result.xlsx"');
         header('Cache-Control: max-age=0');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
     }
 

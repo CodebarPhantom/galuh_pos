@@ -152,6 +152,7 @@
     $lang['add_product_category'] = 'Add Product Category';
     $lang['delete_product_category'] = 'Delete Product Category';
     $lang['edit_product_category'] = 'Edit Product Category';
+    
 
     $lang['total_quantity'] = 'Total Quantity';
     $lang['export_inventory'] = 'Export Inventory';
@@ -315,7 +316,7 @@
     $lang['delete_promotion'] = 'Delete Promotion';
     $lang['promotion_category'] = 'Promotion Category';
 
-    $lang['report_details'] = 'Report Details';
+    $lang['report_details'] = 'Details Report ';
 
     $lang['margin_80'] = 'Margin 80%';
     $lang['margin_20'] = 'Margin 20%';
@@ -327,9 +328,29 @@
     $lang['gross_sales'] = 'Gross Sales';
     $lang['net_sales']= 'Net Sales';
 
-    $lang ['profit_sharing'] = 'Profit Sharing';
+    $lang['profit_sharing'] = 'Profit Sharing';
 
-    $lang ['today_transaction'] = "Today's Transaction";
-    $lang ['user_by'] = "User By";
+    $lang['today_transaction'] = "Today's Transaction";
+    $lang['user_by'] = "User By";
+    $lang['monthly_report_category'] = 'Monthly Report by Category';
+    $lang['month'] = 'Month';
+    $lang['year'] = 'Year';
+
+    $lang['service_item'] = 'Service Item';
+    $lang ['service_center'] = 'Service Center';
+    $lang ['list_service'] = 'List Service';
+    $lang ['add_service_item'] = 'Add Service Item';
+    $lang ['edit_service_item'] = 'Edit Service Item';
+    $lang ['delete_service_item'] = 'Delete Service Item';
+    $lang ['service_code'] = 'Service Code';  
+    $lang ['date_of_entry'] = 'Date of Entry';
+    $lang ['date_of_completion'] = 'Date of Completion';
+    $lang ['technician'] = 'Technician';
+    $lang ['new'] = 'New';
+    $lang['process'] = 'Process';
+    $lang['done'] = 'Done';
+    $lang['phone'] ='Phone';
+    $lang['report_service_center'] = 'Report Service Center';
+
 
 

@@ -188,6 +188,7 @@ class Promotion extends CI_Controller
         $data['lang_edit'] = $this->lang->line('edit');
         $data['lang_status'] = $this->lang->line('status');
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
 
         $data['lang_sales_history'] = $this->lang->line('sales_history');
         $data['lang_no_match_found'] = $this->lang->line('no_match_found');
@@ -195,6 +196,8 @@ class Promotion extends CI_Controller
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_active']= $this->lang->line('active');
         $data['lang_inactive']= $this->lang->line('inactive');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('promotion', $data);
     }
@@ -293,6 +296,7 @@ class Promotion extends CI_Controller
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
 
         $data['lang_report_details'] = $this->lang->line('report_details');
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
         $data['lang_promotion'] = $this->lang->line('promotion');
         $data['lang_discount'] = $this->lang->line('discount');
         $data['lang_edit_promotion'] =$this->lang->line('edit_promotion');
@@ -300,6 +304,8 @@ class Promotion extends CI_Controller
         $data['lang_actived_promotion'] = $this->lang->line('actived_promotion');
         $data['lang_deactived_promotion']= $this->lang->line('deactived_promotion');
         $data['lang_delete_promotion']= $this->lang->line('delete_promotion');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $data['lang_active']= $this->lang->line('active');
         $data['lang_inactive']= $this->lang->line('inactive');
@@ -390,7 +396,7 @@ class Promotion extends CI_Controller
         $data['lang_action'] = $this->lang->line('action');
         $data['lang_edit'] = $this->lang->line('edit');
         $data['lang_status'] = $this->lang->line('status');
-
+        $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
        
         $data['lang_sales_history'] = $this->lang->line('sales_history');
         $data['lang_no_match_found'] = $this->lang->line('no_match_found');
@@ -399,6 +405,8 @@ class Promotion extends CI_Controller
         $data['lang_back'] = $this->lang->line('back');
         $data['lang_create_return_order'] = $this->lang->line('create_return_order');
         $data['lang_promotion'] = $this->lang->line('promotion');
+        $data['lang_service_center'] = $this->lang->line('service_center');
+        $data['lang_list_service'] = $this->lang->line('list_service');
 
         $this->load->view('add_promotion', $data);
     }

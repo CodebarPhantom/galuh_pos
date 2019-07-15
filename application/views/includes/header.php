@@ -47,7 +47,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title><?php echo $setting_site_name; ?></title>
 		<link rel="shortcut icon" href="<?php echo base_url();?>assets/img/logo/<?php echo $setting_image;?>">
 
@@ -216,6 +216,14 @@
 				<ul class="children <?php if ($tk_c != 'reports') {
                         ?> collapse <?php 
                     } ?>" id="sub-item-reports">
+					
+					<li>
+						<a <?php if (($tk_m == 'report_details')) {
+                        ?> style="background-color: #e9ecf2;" <?php 
+                    } ?> href="<?=base_url()?>reports/report_details">
+							<?php echo $lang_report_details; ?>
+						</a>
+					</li>
 					<li>
 						<a <?php if (($tk_m == 'sales_report')) {
                         ?> style="background-color: #e9ecf2;" <?php 
@@ -224,10 +232,10 @@
 						</a>
 					</li>
 					<li>
-						<a <?php if (($tk_m == 'report_details')) {
+						<a <?php if (($tk_m == 'monthly_report_category')) {
                         ?> style="background-color: #e9ecf2;" <?php 
-                    } ?> href="<?=base_url()?>reports/report_details">
-							<?php echo $lang_report_details; ?>
+                    } ?> href="<?=base_url()?>reports/monthly_report_category">
+							<?php echo $lang_monthly_report_category; ?>
 						</a>
 					</li>
 				</ul>
@@ -341,11 +349,7 @@
 			
 			
 			
-			<li <?php if ($tk_c == 'inventory') {
-                    ?> class="active" <?php 
-                } ?>>
-				<a href="<?=base_url()?>inventory/view"><?php echo $lang_inventory; ?></a>
-			</li>
+			
 			
 			<li <?php if ($tk_c == 'products') {
                     ?> class="parent active" <?php 
@@ -386,7 +390,11 @@
 				</ul>
 			</li>
 			
-			
+			<li <?php if ($tk_c == 'inventory') {
+                    ?> class="active" <?php 
+                } ?>>
+				<a href="<?=base_url()?>inventory/view"><?php echo $lang_inventory; ?></a>
+			</li>
 			<?php
                 /*if ($user_role < 3) {
                     ?>
@@ -398,6 +406,27 @@
 			<?php
 
                 }*/ ?>
+			<li <?php if ($tk_c == 'service_center') {
+                    ?> class="parent active" <?php 
+                } else {
+                    echo 'class="parent"';
+                } ?>>
+				<a data-toggle="collapse" href="#sub-item-service">
+					<?php echo $lang_service_center; ?>
+				</a>
+				<ul class="children <?php if ($tk_c != 'service_center') {
+                    ?> collapse <?php 
+                } ?>" id="sub-item-service">
+					<li>
+						<a <?php if (($tk_m == 'list_service') ) {
+                    ?> style="background-color: #e9ecf2;" <?php 
+                } ?> href="<?=base_url()?>service_center/list_service">
+							<?php echo $lang_list_service; ?>
+						</a>
+					</li>
+					
+				</ul>
+			</li>
 			
 			<li <?php if ($tk_c == 'setting') {
                     ?> class="parent active" <?php 
