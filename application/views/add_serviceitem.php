@@ -22,6 +22,8 @@
 		$("#customer").select2({
 			minimumInputLength: 3
 		});
+
+		$("#grouping_category").select2();
 	} );
 </script>
 <style type="text/css">
@@ -141,6 +143,28 @@
 							<div class="form-group">
 								<label><?php echo $lang_qty; ?></label>
 								<input type="number" name="qty" class="form-control" autocomplete="off" required/>
+							</div>
+						</div>
+						<div class="col-md-4">
+						<div class="form-group">
+								<label><?php echo $lang_grouping_category; ?> <span style="color: #F00">*</span></label>
+								<select id="grouping_category" class="form-control"  name="grouping_category[]" multiple="multiple" required autocomplete="off">
+								
+								<?php
+                                    $catData = $this->Constant_model->getDataAll('category', 'id', 'DESC');
+                                    for ($p = 0; $p < count($catData); ++$p) {
+                                        $cat_id = $catData[$p]->id;
+										$cat_name = $catData[$p]->name;?>
+										<option  value="<?php echo $cat_id; ?>">
+											<?php echo $cat_name; ?>
+										</option>
+								<?php
+                                        unset($cat_id);
+										unset($cat_name);
+                                    }
+                                ?>
+								</select>
+								
 							</div>
 						</div>
 					</div>

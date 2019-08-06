@@ -436,6 +436,7 @@ class Service_center extends CI_Controller
         $data['lang_monthly_report_category'] = $this->lang->line('monthly_report_category');
         $data['lang_service_center'] = $this->lang->line('service_center');
         $data['lang_list_service'] = $this->lang->line('list_service');
+        $data['lang_grouping_category'] = $this->lang->line('grouping_category');
 
         $this->load->view('add_serviceitem', $data);
     }

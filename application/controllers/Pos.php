@@ -103,6 +103,7 @@ class Pos extends CI_Controller
         $data['lang_please_update_inven'] = $this->lang->line('please_update_inven');
 
         $data['lang_promotion_category'] = $this->lang->line('promotion_category');
+        $data['lang_remark'] = $this->lang->line('remark');
 
         if ($user_role == '1') {
             if (isset($_COOKIE['outlet'])) {
@@ -153,6 +154,7 @@ class Pos extends CI_Controller
         $data['lang_print_small_receipt'] = $this->lang->line('print_small_receipt');
         $data['lang_email'] = $this->lang->line('email');
         $data['lang_print_a4'] = $this->lang->line('print_a4');
+        $data['lang_remark'] = $this->lang->line('remark');
 
         $this->load->view('print_invoice', $data);
     }
@@ -215,7 +217,7 @@ class Pos extends CI_Controller
         if (isset($_POST['hold_bill_submit'])) {
             $customer = $this->input->post('customer');
             $hold_ref = $this->input->post('hold_ref');
-
+            
             $row_count = $this->input->post('row_count');
             $subTotal = $this->input->post('subTotal');
             $dis_amt = $this->input->post('dis_amt');
@@ -357,7 +359,7 @@ class Pos extends CI_Controller
 
             /* Eryan Fauzan */
             $promo_id = $this->input->post('promo_id');
-
+            $remark = $this->input->post('remark');
             $user_id = $this->session->userdata('user_id');
             $user_outlet = $this->input->post('outlet');
             $tm = date('Y-m-d H:i:s', time());
@@ -445,7 +447,8 @@ class Pos extends CI_Controller
                     'vt_status' => $vt_status,
                     'status' => '1',
                     'card_number' => $addi_card_numb,
-                    'promo_id'=> $promo_id
+                    'promo_id'=> $promo_id,
+                    'remark'=> $remark
             );
             $order_id = $this->Constant_model->insertDataReturnLastId('orders', $ins_order_data);
 

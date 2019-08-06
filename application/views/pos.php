@@ -1589,6 +1589,13 @@ $(document).on('ready', function() {
                             } ?> autocomplete="off" />
 						</div>
 					</div>
+
+					<div class="row" style="padding-top: 10px; padding-bottom: 10px;">
+						<div class="col-md-6"><b><?php echo $lang_remark; ?> :</b></div>
+						<div class="col-md-6">
+							<input type="text" name="remark" class="form-control" style="border: 1px solid #3a3a3a; color: #010101;" autocomplete="off" />
+						</div>
+					</div>
 					
 					<div class="row" id="addi_card_numb_wrp" style="padding-top: 10px; padding-bottom: 10px; display: none;">
 						<div class="col-md-6"><b><?php echo $lang_card_number; ?> :</b></div>

@@ -351,6 +351,7 @@
     $lang['done'] = 'Done';
     $lang['phone'] ='Phone';
     $lang['report_service_center'] = 'Report Service Center';
+    $lang['grouping_category'] =  'Grouping Category';
 
 
 

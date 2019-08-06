@@ -45,7 +45,7 @@
     $card_numb = $orderData[0]->gift_card;
 
     $addi_card_numb = $orderData[0]->card_number;
-
+    $remark_ord = $orderData[0]->remark;
     $receipt_header = '';
     $receipt_footer = $orderData[0]->outlet_receipt_footer;
 
@@ -315,6 +315,17 @@
                     ?>
 				</td>
 			</tr>
+			<?php
+                if (!empty($remark_ord)) {
+                    ?>
+			<tr>
+				<td colspan="2" style="text-align:left; font-weight:bold; border-top:1px solid #000; padding-top:5px;"><?php echo $lang_remark; ?></td>
+				<td colspan="2" style="border-top:1px solid #000; padding-top:5px; text-align:right; font-weight:bold;"><?php echo nl2br($remark_ord); ?></td>
+    		</tr>
+			<?php
+
+                }
+            ?>
 			<?php
                 if (!empty($addi_card_numb)) {
                     ?>
